@@ -441,6 +441,138 @@ class CycleTrackingAPITester:
         except Exception as e:
             await self.log_result("Habits Endpoints", False, f"Error: {str(e)}")
     
+    async def test_delete_habit_endpoint(self):
+        """Test DELETE /api/habits/{habit_id} endpoint specifically"""
+        try:
+            print("\n" + "=" * 60)
+            print("🎯 TESTING DELETE /api/habits/{habit_id} ENDPOINT")
+            print("=" * 60)
+            
+            # Step 1: Create a test habit for deletion
+            habit_data = {
+                "title": "Test Habit for Deletion",
+                "type": "boolean", 
+                "target": None,
+                "days_of_week": [1, 2, 3, 4, 5],  # Weekdays
+                "reminders": ["09:00", "18:00"]
+            }
+            
+            response = await self.client.post(
+                f"{API_BASE}/habits",
+                json=habit_data,
+                headers=self.auth_headers
+            )
+            
+            if response.status_code != 200:
+                await self.log_result("DELETE Habit - Create Test Habit", False, f"Failed to create test habit: {response.status_code}")
+                return
+            
+            data = response.json()
+            if "habit" not in data or "id" not in data["habit"]:
+                await self.log_result("DELETE Habit - Create Test Habit", False, "Invalid habit creation response")
+                return
+                
+            habit_id = data["habit"]["id"]
+            await self.log_result("DELETE Habit - Create Test Habit", True, f"Test habit created with ID: {habit_id}")
+            
+            # Step 2: Create habit logs for this habit
+            log_data = {"completed": True, "value": None}
+            log_response = await self.client.post(
+                f"{API_BASE}/habits/{habit_id}/log",
+                json=log_data,
+                headers=self.auth_headers
+            )
+            
+            if log_response.status_code == 200:
+                await self.log_result("DELETE Habit - Create Habit Log", True, "Habit log created for testing")
+            else:
+                await self.log_result("DELETE Habit - Create Habit Log", False, f"Failed to create habit log: {log_response.status_code}")
+            
+            # Step 3: Verify habit exists before deletion
+            response = await self.client.get(f"{API_BASE}/habits", headers=self.auth_headers)
+            if response.status_code == 200:
+                habits_data = response.json()
+                habits = habits_data.get("habits", [])
+                habit_exists = any(h["id"] == habit_id for h in habits)
+                
+                if habit_exists:
+                    await self.log_result("DELETE Habit - Verify Exists Before", True, "Habit exists in database before deletion")
+                else:
+                    await self.log_result("DELETE Habit - Verify Exists Before", False, "Habit not found before deletion")
+                    return
+            else:
+                await self.log_result("DELETE Habit - Verify Exists Before", False, f"Failed to get habits: {response.status_code}")
+                return
+            
+            # Step 4: DELETE the habit
+            response = await self.client.delete(
+                f"{API_BASE}/habits/{habit_id}",
+                headers=self.auth_headers
+            )
+            
+            if response.status_code == 200:
+                delete_data = response.json()
+                deleted_count = delete_data.get("deleted_count", 0)
+                message = delete_data.get("message", "")
+                
+                if deleted_count == 1 and "deleted successfully" in message:
+                    await self.log_result("DELETE Habit - Delete Request", True, f"Habit deleted successfully. Message: {message}, Count: {deleted_count}")
+                else:
+                    await self.log_result("DELETE Habit - Delete Request", False, f"Unexpected response: {delete_data}")
+            else:
+                await self.log_result("DELETE Habit - Delete Request", False, f"DELETE failed: {response.status_code} - {response.text}")
+                return
+            
+            # Step 5: Verify habit is deleted from database
+            response = await self.client.get(f"{API_BASE}/habits", headers=self.auth_headers)
+            if response.status_code == 200:
+                habits_data = response.json()
+                habits = habits_data.get("habits", [])
+                habit_exists = any(h["id"] == habit_id for h in habits)
+                
+                if not habit_exists:
+                    await self.log_result("DELETE Habit - Verify Deleted", True, "Habit successfully removed from database")
+                else:
+                    await self.log_result("DELETE Habit - Verify Deleted", False, "Habit still exists in database after deletion")
+            else:
+                await self.log_result("DELETE Habit - Verify Deleted", False, f"Failed to verify deletion: {response.status_code}")
+            
+            # Step 6: Verify habit logs are also deleted
+            response = await self.client.get(f"{API_BASE}/habits/{habit_id}/logs", headers=self.auth_headers)
+            if response.status_code == 200:
+                logs_data = response.json()
+                logs = logs_data.get("logs", [])
+                
+                if len(logs) == 0:
+                    await self.log_result("DELETE Habit - Verify Logs Deleted", True, "Habit logs successfully deleted")
+                else:
+                    await self.log_result("DELETE Habit - Verify Logs Deleted", False, f"Habit logs still exist: {len(logs)} logs found")
+            else:
+                # 404 or other error is acceptable since habit is deleted
+                await self.log_result("DELETE Habit - Verify Logs Deleted", True, f"Habit logs endpoint returns {response.status_code} (expected after deletion)")
+            
+            # Step 7: Test deleting non-existent habit
+            fake_habit_id = "non-existent-habit-id-12345"
+            response = await self.client.delete(
+                f"{API_BASE}/habits/{fake_habit_id}",
+                headers=self.auth_headers
+            )
+            
+            if response.status_code == 404:
+                await self.log_result("DELETE Habit - Non-existent", True, "Correctly returns 404 for non-existent habit")
+            else:
+                await self.log_result("DELETE Habit - Non-existent", False, f"Expected 404, got {response.status_code}")
+            
+            # Step 8: Test DELETE without authentication
+            response = await self.client.delete(f"{API_BASE}/habits/{fake_habit_id}")
+            if response.status_code == 401:
+                await self.log_result("DELETE Habit - No Auth", True, "Correctly requires authentication (401)")
+            else:
+                await self.log_result("DELETE Habit - No Auth", False, f"Expected 401, got {response.status_code}")
+                
+        except Exception as e:
+            await self.log_result("DELETE Habit Endpoint", False, f"Error: {str(e)}")
+    
     async def test_summaries_endpoint(self):
         """Test summaries generation"""
         try:
