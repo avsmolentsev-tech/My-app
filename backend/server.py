@@ -620,12 +620,20 @@ async def delete_habit(
     """Удалить привычку"""
     user_id = await verify_session(db, request, authorization)
     
-    await db.habits.update_one(
-        {"id": habit_id, "user_id": user_id},
-        {"$set": {"is_active": False}}
+    # Полностью удаляем привычку из базы данных
+    result = await db.habits.delete_one(
+        {"id": habit_id, "user_id": user_id}
     )
     
-    return {"message": "Habit deleted"}
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Habit not found")
+    
+    # Также удаляем все логи этой привычки
+    await db.habit_logs.delete_many(
+        {"habit_id": habit_id, "user_id": user_id}
+    )
+    
+    return {"message": "Habit deleted successfully", "deleted_count": result.deleted_count}
 
 
 @api_router.post("/habits/{habit_id}/log")
