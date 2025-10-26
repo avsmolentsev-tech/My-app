@@ -174,11 +174,11 @@ async def save_onboarding(
     # Upsert settings
     await db.cycle_settings.update_one(
         {"user_id": user_id},
-        {"$set": settings.dict()},
+        {"$set": serialize_for_mongo(settings)},
         upsert=True
     )
     
-    return {"message": "Onboarding completed", "settings": settings.dict()}
+    return {"message": "Onboarding completed", "settings": serialize_for_mongo(settings)}
 
 
 @api_router.get("/cycle/settings")
