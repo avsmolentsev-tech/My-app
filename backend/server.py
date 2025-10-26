@@ -97,7 +97,7 @@ async def process_session(
         expires_at=expires_at
     )
     
-    await db.user_sessions.insert_one(session.dict())
+    await db.user_sessions.insert_one(serialize_for_mongo(session))
     
     # Вернуть данные и установить cookie
     response = JSONResponse(content={
