@@ -299,10 +299,11 @@ export default function HomeScreen() {
                   style={styles.habitButton}
                   onPress={() => handleHabitIncrement(habit.id, habit)}
                   activeOpacity={0.8}
+                  disabled={log.value >= habit.target}
                 >
                   <Ionicons name="add" size={20} color={colors.white} />
                   <Text style={styles.habitButtonText}>
-                    +{Math.ceil(habit.target * 0.1)}
+                    +{Math.ceil(habit.target * 0.1)} ({Math.ceil(habit.target * 0.1 / habit.target * 100)}% от цели)
                   </Text>
                 </TouchableOpacity>
               </View>
