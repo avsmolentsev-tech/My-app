@@ -143,7 +143,9 @@ export default function HabitsScreen() {
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Привычки</Text>
-        <View style={{ width: 24 }} />
+        <TouchableOpacity onPress={() => setShowAddModal(true)}>
+          <Ionicons name="add-circle" size={28} color={colors.primary} />
+        </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.content}>
@@ -153,53 +155,117 @@ export default function HabitsScreen() {
           <View style={styles.emptyState}>
             <Ionicons name="checkbox-outline" size={64} color={colors.gray400} />
             <Text style={styles.emptyText}>Пока нет привычек</Text>
-            <Text style={styles.emptySubtext}>Создайте свою первую привычку</Text>
+            <Text style={styles.emptySubtext}>Нажмите + чтобы создать первую привычку</Text>
           </View>
         ) : (
           <>
             <Text style={styles.sectionTitle}>Сегодня</Text>
-            {habits.map((habit) => (
-              <TouchableOpacity
-                key={habit.id}
-                style={styles.habitCard}
-                onPress={() => toggleHabit(habit.id)}
-                activeOpacity={0.7}
-              >
-                <View style={styles.habitLeft}>
-                  <View style={[
-                    styles.checkbox,
-                    todayLogs[habit.id] && styles.checkboxChecked
-                  ]}>
-                    {todayLogs[habit.id] && (
-                      <Ionicons name="checkmark" size={20} color={colors.white} />
+            {habits.map((habit) => {
+              const log = todayLogs[habit.id] || { completed: false, value: 0 };
+              const progress = habit.target ? (log.value / habit.target) * 100 : 0;
+              
+              return (
+                <View key={habit.id} style={styles.habitCard}>
+                  <View style={styles.habitHeader}>
+                    <Text style={styles.habitTitle}>{habit.title}</Text>
+                    {log.completed && (
+                      <View style={styles.completedBadge}>
+                        <Ionicons name="checkmark-circle" size={20} color={colors.success} />
+                      </View>
                     )}
                   </View>
-                  <View style={styles.habitInfo}>
-                    <Text style={[
-                      styles.habitTitle,
-                      todayLogs[habit.id] && styles.habitTitleCompleted
-                    ]}>
-                      {habit.title}
-                    </Text>
-                    {habit.target && (
-                      <Text style={styles.habitTarget}>
-                        Цель: {habit.target} {habit.type === 'quantitative' ? 'раз' : ''}
+                  
+                  {habit.target && (
+                    <>
+                      <View style={styles.progressBar}>
+                        <View style={[styles.progressFill, { width: `${Math.min(progress, 100)}%` }]} />
+                      </View>
+                      <Text style={styles.progressText}>
+                        {log.value} / {habit.target} ({Math.round(progress)}%)
                       </Text>
-                    )}
-                  </View>
+                      
+                      <View style={styles.habitControls}>
+                        <TouchableOpacity
+                          style={styles.controlButton}
+                          onPress={() => decrementHabit(habit.id, log.value)}
+                          disabled={log.value === 0}
+                        >
+                          <Ionicons name="remove-circle" size={32} color={log.value === 0 ? colors.gray400 : colors.primary} />
+                        </TouchableOpacity>
+                        
+                        <Text style={styles.currentValue}>{log.value}</Text>
+                        
+                        <TouchableOpacity
+                          style={styles.controlButton}
+                          onPress={() => incrementHabit(habit.id, log.value, habit.target)}
+                          disabled={log.value >= habit.target}
+                        >
+                          <Ionicons name="add-circle" size={32} color={log.value >= habit.target ? colors.gray400 : colors.primary} />
+                        </TouchableOpacity>
+                      </View>
+                    </>
+                  )}
                 </View>
-              </TouchableOpacity>
-            ))}
+              );
+            })}
           </>
         )}
-
-        <View style={styles.infoBox}>
-          <Ionicons name="information-circle-outline" size={24} color={colors.info} />
-          <Text style={styles.infoText}>
-            Нажмите на привычку чтобы отметить её выполненной за сегодня
-          </Text>
-        </View>
       </ScrollView>
+
+      {/* Add Habit Modal */}
+      <Modal
+        visible={showAddModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowAddModal(false)}
+      >
+        <KeyboardAvoidingView
+          style={styles.modalContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Новая привычка</Text>
+              <TouchableOpacity onPress={() => setShowAddModal(false)}>
+                <Ionicons name="close" size={28} color={colors.text} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Название привычки</Text>
+              <TextInput
+                style={styles.input}
+                value={newHabit.title}
+                onChangeText={(text) => setNewHabit({ ...newHabit, title: text })}
+                placeholder="Например: Выпить воды, Прочитать страниц..."
+                placeholderTextColor={colors.textLight}
+              />
+            </View>
+
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Цель в день (количество)</Text>
+              <TextInput
+                style={styles.input}
+                value={newHabit.target}
+                onChangeText={(text) => setNewHabit({ ...newHabit, target: text })}
+                placeholder="Например: 8 (стаканов), 30 (страниц)"
+                placeholderTextColor={colors.textLight}
+                keyboardType="number-pad"
+              />
+            </View>
+
+            <TouchableOpacity
+              style={[styles.saveButton, saving && styles.saveButtonDisabled]}
+              onPress={handleAddHabit}
+              disabled={saving}
+            >
+              <Text style={styles.saveButtonText}>
+                {saving ? 'Создание...' : 'Создать привычку'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 }
