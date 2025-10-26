@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  TextInput,
+  Modal,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
@@ -18,7 +22,14 @@ export default function HabitsScreen() {
   const router = useRouter();
   const [habits, setHabits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [todayLogs, setTodayLogs] = useState<Record<string, boolean>>({});
+  const [todayLogs, setTodayLogs] = useState<Record<string, any>>({});
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newHabit, setNewHabit] = useState({
+    title: '',
+    type: 'quantitative',
+    target: '',
+  });
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     loadHabits();
@@ -32,18 +43,21 @@ export default function HabitsScreen() {
       
       // Load today's logs for each habit
       const today = format(new Date(), 'yyyy-MM-dd');
-      const logs: Record<string, boolean> = {};
+      const logs: Record<string, any> = {};
       
       for (const habit of data.habits || []) {
         try {
           const logData = await habitsAPI.getLogs(habit.id, today, today);
           if (logData.logs && logData.logs.length > 0) {
-            logs[habit.id] = logData.logs[0].completed;
+            logs[habit.id] = {
+              completed: logData.logs[0].completed,
+              value: logData.logs[0].value || 0,
+            };
           } else {
-            logs[habit.id] = false;
+            logs[habit.id] = { completed: false, value: 0 };
           }
         } catch (error) {
-          logs[habit.id] = false;
+          logs[habit.id] = { completed: false, value: 0 };
         }
       }
       
@@ -55,13 +69,69 @@ export default function HabitsScreen() {
     }
   };
 
-  const toggleHabit = async (habitId: string) => {
+  const handleAddHabit = async () => {
+    if (!newHabit.title.trim()) {
+      Alert.alert('Ошибка', 'Введите название привычки');
+      return;
+    }
+
+    if (!newHabit.target || parseFloat(newHabit.target) <= 0) {
+      Alert.alert('Ошибка', 'Введите цель (число больше 0)');
+      return;
+    }
+
+    setSaving(true);
     try {
-      const newState = !todayLogs[habitId];
-      await habitsAPI.log(habitId, { completed: newState });
-      setTodayLogs({ ...todayLogs, [habitId]: newState });
+      await habitsAPI.create({
+        title: newHabit.title,
+        type: 'quantitative',
+        target: parseFloat(newHabit.target),
+        days_of_week: [0, 1, 2, 3, 4, 5, 6],
+        reminders: [],
+      });
+
+      setShowAddModal(false);
+      setNewHabit({ title: '', type: 'quantitative', target: '' });
+      await loadHabits();
+      Alert.alert('Успешно', 'Привычка создана!');
     } catch (error) {
-      console.error('Error toggling habit:', error);
+      console.error('Error creating habit:', error);
+      Alert.alert('Ошибка', 'Не удалось создать привычку');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const incrementHabit = async (habitId: string, currentValue: number, target: number) => {
+    const newValue = Math.min(currentValue + 1, target);
+    try {
+      await habitsAPI.log(habitId, {
+        completed: newValue >= target,
+        value: newValue,
+      });
+      setTodayLogs({
+        ...todayLogs,
+        [habitId]: { completed: newValue >= target, value: newValue },
+      });
+    } catch (error) {
+      console.error('Error updating habit:', error);
+      Alert.alert('Ошибка', 'Не удалось обновить привычку');
+    }
+  };
+
+  const decrementHabit = async (habitId: string, currentValue: number) => {
+    const newValue = Math.max(currentValue - 1, 0);
+    try {
+      await habitsAPI.log(habitId, {
+        completed: false,
+        value: newValue,
+      });
+      setTodayLogs({
+        ...todayLogs,
+        [habitId]: { completed: false, value: newValue },
+      });
+    } catch (error) {
+      console.error('Error updating habit:', error);
       Alert.alert('Ошибка', 'Не удалось обновить привычку');
     }
   };
