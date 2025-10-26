@@ -431,7 +431,7 @@ async def get_water_today(request: Request, authorization: Optional[str] = Heade
             goal_ml=2000,
             glass_ml=250
         )
-        await db.water_tracker.insert_one(water.dict())
+        await db.water_tracker.insert_one(serialize_for_mongo(water))
     
     return WaterTracker(**water) if isinstance(water, dict) else water
 
