@@ -336,9 +336,39 @@ export default function HomeScreen() {
                 <Animated.View style={[styles.card, styles.habitCard]}>
                   <View style={styles.habitHeader}>
                     <Text style={styles.cardTitle}>{habit.title}</Text>
-                    {log.completed && (
-                      <Ionicons name="checkmark-circle" size={24} color={colors.success} />
-                    )}
+                    <View style={styles.habitHeaderRight}>
+                      {log.completed && (
+                        <Ionicons name="checkmark-circle" size={24} color={colors.success} />
+                      )}
+                      <TouchableOpacity
+                        onPress={() => {
+                          Alert.alert(
+                            'Удалить привычку?',
+                            `Вы уверены, что хотите удалить "${habit.title}"?`,
+                            [
+                              { text: 'Отмена', style: 'cancel' },
+                              {
+                                text: 'Удалить',
+                                style: 'destructive',
+                                onPress: async () => {
+                                  try {
+                                    const { habitsAPI } = await import('../services/api');
+                                    await habitsAPI.delete(habit.id);
+                                    await loadHabits();
+                                  } catch (error) {
+                                    console.error('Error deleting habit:', error);
+                                    Alert.alert('Ошибка', 'Не удалось удалить привычку');
+                                  }
+                                },
+                              },
+                            ]
+                          );
+                        }}
+                        style={styles.deleteButton}
+                      >
+                        <Ionicons name="trash-outline" size={20} color={colors.error} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   
                   <View style={styles.waterProgress}>
