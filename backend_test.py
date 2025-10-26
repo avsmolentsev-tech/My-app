@@ -636,6 +636,9 @@ class CycleTrackingAPITester:
         await self.test_habits_endpoints()
         await self.test_summaries_endpoint()
         
+        # Test DELETE habits endpoint specifically (as requested)
+        await self.test_delete_habit_endpoint()
+        
         # Summary
         print("\n" + "=" * 60)
         print("📊 TEST SUMMARY")
