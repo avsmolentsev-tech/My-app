@@ -319,57 +319,108 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     padding: spacing.md,
     marginBottom: spacing.md,
+  },
+  habitHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  habitLeft: {
-    flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-  },
-  checkbox: {
-    width: 32,
-    height: 32,
-    borderRadius: borderRadius.md,
-    borderWidth: 2,
-    borderColor: colors.gray400,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: spacing.md,
-  },
-  checkboxChecked: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  habitInfo: {
-    flex: 1,
+    marginBottom: spacing.sm,
   },
   habitTitle: {
     ...typography.body,
     color: colors.text,
     fontWeight: '600',
+    flex: 1,
   },
-  habitTitleCompleted: {
-    textDecorationLine: 'line-through',
-    color: colors.textLight,
+  completedBadge: {
+    marginLeft: spacing.sm,
   },
-  habitTarget: {
-    ...typography.bodySmall,
-    color: colors.textLight,
-    marginTop: spacing.xs,
+  progressBar: {
+    height: 8,
+    backgroundColor: colors.gray200,
+    borderRadius: borderRadius.full,
+    overflow: 'hidden',
+    marginBottom: spacing.sm,
   },
-  infoBox: {
-    flexDirection: 'row',
-    backgroundColor: colors.info + '20',
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginTop: spacing.lg,
+  progressFill: {
+    height: '100%',
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.full,
   },
-  infoText: {
+  progressText: {
     ...typography.bodySmall,
     color: colors.text,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+  },
+  habitControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  controlButton: {
+    padding: spacing.sm,
+  },
+  currentValue: {
+    ...typography.h2,
+    color: colors.primary,
+    marginHorizontal: spacing.lg,
+    minWidth: 50,
+    textAlign: 'center',
+  },
+  modalContainer: {
     flex: 1,
-    marginLeft: spacing.sm,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    padding: spacing.lg,
+    paddingBottom: spacing.xxl,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.lg,
+  },
+  modalTitle: {
+    ...typography.h2,
+    color: colors.text,
+  },
+  formGroup: {
+    marginBottom: spacing.md,
+  },
+  label: {
+    ...typography.body,
+    color: colors.text,
+    fontWeight: '600',
+    marginBottom: spacing.sm,
+  },
+  input: {
+    ...typography.body,
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.gray300,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    color: colors.text,
+  },
+  saveButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.lg,
+    alignItems: 'center',
+    marginTop: spacing.lg,
+  },
+  saveButtonDisabled: {
+    opacity: 0.6,
+  },
+  saveButtonText: {
+    ...typography.body,
+    color: colors.white,
+    fontWeight: '600',
   },
 });
