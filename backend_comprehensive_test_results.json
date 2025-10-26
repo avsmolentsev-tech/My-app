@@ -1,0 +1,74 @@
+[
+  {
+    "test": "Database Setup",
+    "success": true,
+    "details": "Created test user test-user-800ddabb-3b8c-4b05-a0ac-6119ae043d8b with valid session",
+    "timestamp": "2025-10-26T12:26:19.738615"
+  },
+  {
+    "test": "Health Check",
+    "success": true,
+    "details": "Backend responding with status 200",
+    "timestamp": "2025-10-26T12:26:20.855050"
+  },
+  {
+    "test": "Auth Me (Valid Session)",
+    "success": false,
+    "details": "Status: 500, Response: Internal Server Error",
+    "timestamp": "2025-10-26T12:26:20.867922"
+  },
+  {
+    "test": "Onboarding Flow",
+    "success": false,
+    "details": "Status: 500, Response: Internal Server Error",
+    "timestamp": "2025-10-26T12:26:20.887088"
+  },
+  {
+    "test": "GET Water Today",
+    "success": false,
+    "details": "Status: 500",
+    "timestamp": "2025-10-26T12:26:20.901940"
+  },
+  {
+    "test": "POST Journal Entry",
+    "success": false,
+    "details": "Status: 500, Response: Internal Server Error",
+    "timestamp": "2025-10-26T12:26:20.916343"
+  },
+  {
+    "test": "POST Create Habit",
+    "success": false,
+    "details": "Status: 500",
+    "timestamp": "2025-10-26T12:26:20.970616"
+  },
+  {
+    "test": "GET Habits",
+    "success": false,
+    "details": "Status: 500",
+    "timestamp": "2025-10-26T12:26:20.981117"
+  },
+  {
+    "test": "Habit Logging",
+    "success": true,
+    "details": "Skipped - no habit ID available",
+    "timestamp": "2025-10-26T12:26:20.981137"
+  },
+  {
+    "test": "GET Daily Tip",
+    "success": false,
+    "details": "Status: 500, Response: Internal Server Error",
+    "timestamp": "2025-10-26T12:26:20.991884"
+  },
+  {
+    "test": "GET Generate Summary",
+    "success": false,
+    "details": "Status: 500",
+    "timestamp": "2025-10-26T12:26:21.001848"
+  },
+  {
+    "test": "Cleanup",
+    "success": true,
+    "details": "Cleaned up test data for user test-user-800ddabb-3b8c-4b05-a0ac-6119ae043d8b",
+    "timestamp": "2025-10-26T12:26:21.008945"
+  }
+]
