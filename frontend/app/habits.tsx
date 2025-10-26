@@ -136,6 +136,30 @@ export default function HabitsScreen() {
     }
   };
 
+  const deleteHabit = async (habitId: string, habitTitle: string) => {
+    Alert.alert(
+      'Удалить привычку?',
+      `Вы уверены, что хотите удалить "${habitTitle}"?`,
+      [
+        { text: 'Отмена', style: 'cancel' },
+        {
+          text: 'Удалить',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await habitsAPI.delete(habitId);
+              await loadHabits();
+              Alert.alert('Успешно', 'Привычка удалена');
+            } catch (error) {
+              console.error('Error deleting habit:', error);
+              Alert.alert('Ошибка', 'Не удалось удалить привычку');
+            }
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
