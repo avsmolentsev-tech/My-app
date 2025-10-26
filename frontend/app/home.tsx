@@ -531,9 +531,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   habitButtonText: {
-    ...typography.body,
+    ...typography.bodySmall,
     color: colors.white,
-    marginLeft: spacing.sm,
+    marginLeft: spacing.xs,
     fontWeight: '600',
   },
   habitHint: {
