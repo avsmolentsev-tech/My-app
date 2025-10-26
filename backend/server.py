@@ -26,6 +26,23 @@ from cycle_utils import (
 from ai_service import generate_health_tip, generate_journal_summary
 
 
+def serialize_for_mongo(obj):
+    """Convert Pydantic model to MongoDB-compatible dict"""
+    if hasattr(obj, 'dict'):
+        data = obj.dict()
+    else:
+        data = obj
+    
+    # Convert date objects to ISO strings
+    for key, value in data.items():
+        if isinstance(value, date_type):
+            data[key] = value.isoformat()
+        elif isinstance(value, datetime):
+            data[key] = value
+    
+    return data
+
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
