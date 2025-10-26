@@ -235,6 +235,14 @@ export default function HabitsScreen() {
                       </View>
                     </>
                   )}
+                  
+                  <TouchableOpacity
+                    style={styles.deleteHabitButton}
+                    onPress={() => deleteHabit(habit.id, habit.title)}
+                  >
+                    <Ionicons name="trash-outline" size={18} color={colors.error} />
+                    <Text style={styles.deleteHabitText}>Удалить привычку</Text>
+                  </TouchableOpacity>
                 </View>
               );
             })}
