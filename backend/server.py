@@ -620,6 +620,10 @@ async def get_habit_logs(
     
     logs = await db.habit_logs.find(query).sort("date", -1).to_list(1000)
     
+    # Remove MongoDB _id field
+    for log in logs:
+        log.pop('_id', None)
+    
     return {"logs": logs}
 
 
