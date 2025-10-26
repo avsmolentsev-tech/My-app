@@ -84,7 +84,7 @@ async def process_session(
             name=session_data.get("name"),
             picture=session_data.get("picture")
         )
-        await db.users.insert_one(user_obj.dict())
+        await db.users.insert_one(serialize_for_mongo(user_obj))
         user_id = user_obj.id
     else:
         user_id = user["id"]
