@@ -362,6 +362,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     flex: 1,
   },
+  habitHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  deleteButton: {
+    padding: spacing.xs,
+  },
   completedBadge: {
     marginLeft: spacing.sm,
   },
