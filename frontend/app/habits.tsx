@@ -469,4 +469,26 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: '600',
   },
+  deleteHabitButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.error,
+    marginTop: spacing.md,
+  },
+  deleteHabitText: {
+    ...typography.bodySmall,
+    color: colors.error,
+    marginLeft: spacing.xs,
+    fontWeight: '600',
+  },
+  habitHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
 });
