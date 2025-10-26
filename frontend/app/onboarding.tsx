@@ -16,20 +16,29 @@ import { cycleAPI } from '../services/api';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { format, subDays } from 'date-fns';
+import { ru } from 'date-fns/locale';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function OnboardingScreen() {
   const router = useRouter();
   const { fetchCycleSettings, fetchTodayInfo } = useAuthStore();
   
-  const [step, setStep] = useState(1);
-  const [lastPeriodStart, setLastPeriodStart] = useState(format(subDays(new Date(), 7), 'yyyy-MM-dd'));
+  const [lastPeriodDate, setLastPeriodDate] = useState(subDays(new Date(), 7));
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [avgCycleLength, setAvgCycleLength] = useState('28');
   const [periodLength, setPeriodLength] = useState('5');
   const [lutealLength, setLutealLength] = useState('14');
   const [loading, setLoading] = useState(false);
 
+  const handleDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      setLastPeriodDate(selectedDate);
+    }
+  };
+
   const handleComplete = async () => {
-    if (!lastPeriodStart || !avgCycleLength || !periodLength || !lutealLength) {
+    if (!avgCycleLength || !periodLength || !lutealLength) {
       Alert.alert('Ошибка', 'Пожалуйста, заполните все поля');
       return;
     }
@@ -37,7 +46,7 @@ export default function OnboardingScreen() {
     setLoading(true);
     try {
       await cycleAPI.saveOnboarding({
-        last_period_start: lastPeriodStart,
+        last_period_start: format(lastPeriodDate, 'yyyy-MM-dd'),
         avg_cycle_length: parseInt(avgCycleLength),
         period_length: parseInt(periodLength),
         luteal_length: parseInt(lutealLength),
@@ -74,16 +83,29 @@ export default function OnboardingScreen() {
         </View>
 
         <View style={styles.form}>
+          {/* Date Picker */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Дата начала последней менструации</Text>
-            <TextInput
-              style={styles.input}
-              value={lastPeriodStart}
-              onChangeText={setLastPeriodStart}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor={colors.textLight}
-            />
-            <Text style={styles.hint}>Например: {format(new Date(), 'yyyy-MM-dd')}</Text>
+            <TouchableOpacity
+              style={styles.dateButton}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Ionicons name="calendar-outline" size={24} color={colors.primary} />
+              <Text style={styles.dateButtonText}>
+                {format(lastPeriodDate, 'dd MMMM yyyy', { locale: ru })}
+              </Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                value={lastPeriodDate}
+                mode="date"
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={handleDateChange}
+                maximumDate={new Date()}
+                minimumDate={subDays(new Date(), 90)}
+              />
+            )}
+            <Text style={styles.hint}>Нажмите чтобы выбрать дату</Text>
           </View>
 
           <View style={styles.inputGroup}>
@@ -188,6 +210,21 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontWeight: '600',
     marginBottom: spacing.sm,
+  },
+  dateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.gray300,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+  },
+  dateButtonText: {
+    ...typography.body,
+    color: colors.text,
+    marginLeft: spacing.sm,
+    flex: 1,
   },
   input: {
     ...typography.body,
