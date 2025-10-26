@@ -64,7 +64,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     const redirectUrl = Linking.createURL('/home');
-    const authUrl = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
+    const authUrl = `${process.env.EXPO_PUBLIC_AUTH_URL}/?redirect=${encodeURIComponent(redirectUrl)}`;
     
     try {
       await WebBrowser.openBrowserAsync(authUrl);
