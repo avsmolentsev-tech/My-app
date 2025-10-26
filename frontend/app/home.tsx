@@ -97,13 +97,14 @@ export default function HomeScreen() {
   const waterProgress = Math.min((consumed / goal) * 100, 100);
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
-      }
-    >
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+        }
+      >
       {/* Header */}
       <View style={styles.header}>
         <View>
