@@ -26,6 +26,8 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [dailyTip, setDailyTip] = useState<string>('');
   const [loadingTip, setLoadingTip] = useState(true);
+  const [habits, setHabits] = useState<any[]>([]);
+  const [habitLogs, setHabitLogs] = useState<Record<string, any>>({});
 
   useEffect(() => {
     loadData();
@@ -36,7 +38,40 @@ export default function HomeScreen() {
       fetchTodayInfo(),
       fetchToday(),
       loadDailyTip(),
+      loadHabits(),
     ]);
+  };
+
+  const loadHabits = async () => {
+    try {
+      const { habitsAPI } = await import('../services/api');
+      const data = await habitsAPI.getAll();
+      setHabits(data.habits || []);
+      
+      // Load today's logs
+      const today = format(new Date(), 'yyyy-MM-dd');
+      const logs: Record<string, any> = {};
+      
+      for (const habit of data.habits || []) {
+        try {
+          const logData = await habitsAPI.getLogs(habit.id, today, today);
+          if (logData.logs && logData.logs.length > 0) {
+            logs[habit.id] = {
+              completed: logData.logs[0].completed,
+              value: logData.logs[0].value || 0,
+            };
+          } else {
+            logs[habit.id] = { completed: false, value: 0 };
+          }
+        } catch (error) {
+          logs[habit.id] = { completed: false, value: 0 };
+        }
+      }
+      
+      setHabitLogs(logs);
+    } catch (error) {
+      console.error('Error loading habits:', error);
+    }
   };
 
   const loadDailyTip = async () => {
