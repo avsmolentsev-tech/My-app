@@ -530,6 +530,10 @@ async def get_habits(request: Request, authorization: Optional[str] = Header(Non
     
     habits = await db.habits.find({"user_id": user_id, "is_active": True}).to_list(100)
     
+    # Remove MongoDB _id field to avoid serialization issues
+    for habit in habits:
+        habit.pop('_id', None)
+    
     return {"habits": habits}
 
 
