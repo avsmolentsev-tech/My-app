@@ -393,6 +393,10 @@ async def get_journal_entries(
     
     entries = await db.journal_entries.find(query).sort("date", -1).to_list(1000)
     
+    # Remove MongoDB _id field to avoid serialization issues
+    for entry in entries:
+        entry.pop('_id', None)
+    
     return {"entries": entries}
 
 
