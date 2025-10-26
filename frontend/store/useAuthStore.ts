@@ -91,7 +91,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       const data = await authAPI.processSession(sessionId);
       
       // Сохранить token
-      await SecureStore.setItemAsync('session_token', data.session_token);
+      await secureStorage.setItemAsync('session_token', data.session_token);
       
       // Установить пользователя
       set({
@@ -127,7 +127,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      await SecureStore.deleteItemAsync('session_token');
+      await secureStorage.deleteItemAsync('session_token');
       set({
         user: null,
         isAuthenticated: false,
@@ -139,7 +139,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   
   checkAuth: async () => {
     try {
-      const token = await SecureStore.getItemAsync('session_token');
+      const token = await secureStorage.getItemAsync('session_token');
       
       if (!token) {
         set({ isLoading: false, isAuthenticated: false });
@@ -165,7 +165,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       
     } catch (error) {
       // Токен невалидный
-      await SecureStore.deleteItemAsync('session_token');
+      await secureStorage.deleteItemAsync('session_token');
       set({ isLoading: false, isAuthenticated: false });
     }
   },
