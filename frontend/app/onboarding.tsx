@@ -15,7 +15,7 @@ import { useAuthStore } from '../store/useAuthStore';
 import { cycleAPI } from '../services/api';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { format, subDays } from 'date-fns';
+import { format, subDays, parseISO } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -24,6 +24,7 @@ export default function OnboardingScreen() {
   const { fetchCycleSettings, fetchTodayInfo } = useAuthStore();
   
   const [lastPeriodDate, setLastPeriodDate] = useState(subDays(new Date(), 7));
+  const [lastPeriodDateString, setLastPeriodDateString] = useState(format(subDays(new Date(), 7), 'yyyy-MM-dd'));
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [avgCycleLength, setAvgCycleLength] = useState('28');
   const [periodLength, setPeriodLength] = useState('5');
@@ -34,6 +35,17 @@ export default function OnboardingScreen() {
     setShowDatePicker(Platform.OS === 'ios');
     if (selectedDate) {
       setLastPeriodDate(selectedDate);
+      setLastPeriodDateString(format(selectedDate, 'yyyy-MM-dd'));
+    }
+  };
+
+  const handleWebDateChange = (dateString: string) => {
+    try {
+      const date = parseISO(dateString);
+      setLastPeriodDate(date);
+      setLastPeriodDateString(dateString);
+    } catch (error) {
+      console.error('Invalid date:', error);
     }
   };
 
