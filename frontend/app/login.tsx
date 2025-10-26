@@ -74,6 +74,28 @@ export default function LoginScreen() {
     }
   };
 
+  const handleTestLogin = async () => {
+    setProcessing(true);
+    try {
+      const response = await fetch(process.env.EXPO_PUBLIC_BACKEND_URL + '/api/auth/test-login', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      
+      const data = await response.json();
+      
+      if (data.session_token) {
+        await login(data.session_token);
+        router.replace('/onboarding');
+      }
+    } catch (error) {
+      console.error('Test login failed:', error);
+      alert('Ошибка тестового входа');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
   if (isLoading || processing) {
     return (
       <View style={styles.container}>
