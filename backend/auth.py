@@ -52,8 +52,18 @@ async def verify_session(
     
     # Проверяем срок действия
     expires_at = session.get("expires_at")
-    if expires_at and expires_at < datetime.now(timezone.utc):
-        await db.user_sessions.delete_one({"session_token": session_token})
-        raise HTTPException(status_code=401, detail="Session expired")
+    if expires_at:
+        # Handle both naive and timezone-aware datetime objects
+        current_time = datetime.now(timezone.utc)
+        if hasattr(expires_at, 'tzinfo') and expires_at.tzinfo is not None:
+            # expires_at is timezone-aware
+            if expires_at < current_time:
+                await db.user_sessions.delete_one({"session_token": session_token})
+                raise HTTPException(status_code=401, detail="Session expired")
+        else:
+            # expires_at is naive, assume UTC
+            if expires_at < current_time.replace(tzinfo=None):
+                await db.user_sessions.delete_one({"session_token": session_token})
+                raise HTTPException(status_code=401, detail="Session expired")
     
     return session["user_id"]
