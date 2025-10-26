@@ -8,6 +8,7 @@ import {
   RefreshControl,
   ActivityIndicator,
   Animated,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore, useWaterStore } from '../store/useAuthStore';
