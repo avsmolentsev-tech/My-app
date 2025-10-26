@@ -154,6 +154,7 @@ export default function HomeScreen() {
   const waterProgress = Math.min((consumed / goal) * 100, 100);
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
