@@ -192,11 +192,17 @@ export default function HabitsScreen() {
                 <View key={habit.id} style={styles.habitCard}>
                   <View style={styles.habitHeader}>
                     <Text style={styles.habitTitle}>{habit.title}</Text>
-                    {log.completed && (
-                      <View style={styles.completedBadge}>
+                    <View style={styles.habitHeaderRight}>
+                      {log.completed && (
                         <Ionicons name="checkmark-circle" size={20} color={colors.success} />
-                      </View>
-                    )}
+                      )}
+                      <TouchableOpacity
+                        onPress={() => deleteHabit(habit.id, habit.title)}
+                        style={styles.deleteButton}
+                      >
+                        <Ionicons name="trash-outline" size={20} color={colors.error} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   
                   {habit.target && (
