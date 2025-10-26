@@ -1,0 +1,92 @@
+[
+  {
+    "test": "GET /auth/me",
+    "success": true,
+    "details": "User retrieved: testuser@cyclewise.com",
+    "timestamp": "2025-10-26T12:49:01.248877"
+  },
+  {
+    "test": "POST /onboarding",
+    "success": true,
+    "details": "Onboarding completed successfully",
+    "timestamp": "2025-10-26T12:49:01.257851"
+  },
+  {
+    "test": "GET /cycle/settings",
+    "success": true,
+    "details": "Settings retrieved: cycle_length=28",
+    "timestamp": "2025-10-26T12:49:01.265997"
+  },
+  {
+    "test": "GET /cycle/today",
+    "success": true,
+    "details": "Today info: cycle_day=285, has_settings=True",
+    "timestamp": "2025-10-26T12:49:01.312917"
+  },
+  {
+    "test": "GET /cycle/calendar",
+    "success": true,
+    "details": "Calendar retrieved: 31 days",
+    "timestamp": "2025-10-26T12:49:01.322895"
+  },
+  {
+    "test": "GET /cycle/reminders",
+    "success": true,
+    "details": "Reminders retrieved: 4 items",
+    "timestamp": "2025-10-26T12:49:01.328637"
+  },
+  {
+    "test": "GET /water/today",
+    "success": true,
+    "details": "Water data: 0/2000 ml",
+    "timestamp": "2025-10-26T12:49:01.343706"
+  },
+  {
+    "test": "POST /water/add",
+    "success": true,
+    "details": "Water added: 250 ml total",
+    "timestamp": "2025-10-26T12:49:01.396100"
+  },
+  {
+    "test": "POST /journal",
+    "success": true,
+    "details": "Journal entry created for 2025-10-26",
+    "timestamp": "2025-10-26T12:49:01.413039"
+  },
+  {
+    "test": "GET /journal",
+    "success": false,
+    "details": "Status: 500",
+    "timestamp": "2025-10-26T12:49:01.432786"
+  },
+  {
+    "test": "POST /habits",
+    "success": true,
+    "details": "Habit created: Daily Mindfulness Practice",
+    "timestamp": "2025-10-26T12:49:01.449491"
+  },
+  {
+    "test": "GET /habits",
+    "success": false,
+    "details": "Status: 500",
+    "timestamp": "2025-10-26T12:49:01.455625"
+  },
+  {
+    "test": "POST /habits/{id}/log",
+    "success": true,
+    "details": "Habit logged successfully",
+    "timestamp": "2025-10-26T12:49:01.469977"
+  },
+  {
+    "test": "GET /tips/daily",
+    "success": true,
+    "details": "AI tip generated: '\u0414\u043e\u0431\u0430\u0432\u044c \u043a \u0440\u0430\u0446\u0438\u043e\u043d\u0443 \u0431\u0435\u043b\u043e\u043a \u0438 \u043a\u043b\u0435\u0442\u0447\u0430\u0442\u043a\u0443.'",
+    "timestamp": "2025-10-26T12:49:01.476423"
+  },
+  {
+    "test": "GET /summaries/generate",
+    "success": true,
+    "details": "Monthly summary generated: 1 positive entries",
+    "timestamp": "2025-10-26T12:49:01.491299"
+  }
+]
