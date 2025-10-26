@@ -3,138 +3,138 @@
     "test": "Health Check",
     "success": true,
     "details": "Backend responding with status 200",
-    "timestamp": "2025-10-26T12:24:58.732864"
+    "timestamp": "2025-10-26T12:46:55.912927"
   },
   {
     "test": "Auth Session Creation",
     "success": true,
     "details": "Expected 500 - Auth service error (External dependency)",
-    "timestamp": "2025-10-26T12:24:58.837175"
+    "timestamp": "2025-10-26T12:46:56.150667"
   },
   {
     "test": "Auth Me (No Token)",
     "success": true,
     "details": "Correctly returns 401 without authentication",
-    "timestamp": "2025-10-26T12:24:58.846272"
+    "timestamp": "2025-10-26T12:46:56.158500"
   },
   {
     "test": "Auth Logout",
     "success": true,
     "details": "Logout endpoint responding correctly",
-    "timestamp": "2025-10-26T12:24:58.859890"
+    "timestamp": "2025-10-26T12:46:56.204231"
   },
   {
     "test": "Mock Session Setup",
     "success": true,
     "details": "Created mock session for user test-user-12345",
-    "timestamp": "2025-10-26T12:24:58.859910"
+    "timestamp": "2025-10-26T12:46:56.204258"
   },
   {
     "test": "Onboarding API",
     "success": true,
     "details": "Correctly requires authentication (401)",
-    "timestamp": "2025-10-26T12:24:58.913953"
+    "timestamp": "2025-10-26T12:46:56.216242"
   },
   {
     "test": "GET Cycle Settings",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:58.928795"
+    "timestamp": "2025-10-26T12:46:56.263318"
   },
   {
     "test": "PUT Cycle Settings",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:58.937698"
+    "timestamp": "2025-10-26T12:46:56.271506"
   },
   {
     "test": "GET Cycle Today",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:58.987289"
+    "timestamp": "2025-10-26T12:46:56.319545"
   },
   {
     "test": "GET Cycle Calendar",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:58.995350"
+    "timestamp": "2025-10-26T12:46:56.326128"
   },
   {
     "test": "GET Cycle Reminders",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.044587"
+    "timestamp": "2025-10-26T12:46:56.376213"
   },
   {
     "test": "GET Water Today",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.053007"
+    "timestamp": "2025-10-26T12:46:56.381594"
   },
   {
     "test": "POST Water Add",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.061514"
+    "timestamp": "2025-10-26T12:46:56.427986"
   },
   {
     "test": "PUT Water Settings",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.115018"
+    "timestamp": "2025-10-26T12:46:56.477975"
   },
   {
     "test": "GET Daily Tip",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.123759"
+    "timestamp": "2025-10-26T12:46:56.525118"
   },
   {
     "test": "POST Journal Entry",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.131731"
+    "timestamp": "2025-10-26T12:46:56.530636"
   },
   {
     "test": "GET Journal Entries",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.180194"
+    "timestamp": "2025-10-26T12:46:56.576090"
   },
   {
     "test": "GET Journal Entry by Date",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.188621"
+    "timestamp": "2025-10-26T12:46:56.622081"
   },
   {
     "test": "POST Create Habit",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.238721"
+    "timestamp": "2025-10-26T12:46:56.629829"
   },
   {
     "test": "GET Habits",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.246964"
+    "timestamp": "2025-10-26T12:46:56.676205"
   },
   {
     "test": "Habit Logging Tests",
     "success": true,
     "details": "Skipped - no habit ID available",
-    "timestamp": "2025-10-26T12:24:59.246983"
+    "timestamp": "2025-10-26T12:46:56.676229"
   },
   {
     "test": "GET Generate Summary",
     "success": true,
     "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:24:59.255300"
+    "timestamp": "2025-10-26T12:46:56.681822"
   },
   {
     "test": "GET Summary Invalid Period",
     "success": true,
     "details": "Auth check works before validation",
-    "timestamp": "2025-10-26T12:24:59.262932"
+    "timestamp": "2025-10-26T12:46:56.728104"
   }
 ]
