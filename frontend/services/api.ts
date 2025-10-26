@@ -1,7 +1,35 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
+
+// Cross-platform secure storage
+const secureStorage = {
+  async getItemAsync(key: string): Promise<string | null> {
+    if (Platform.OS === 'web') {
+      return await AsyncStorage.getItem(key);
+    }
+    return await SecureStore.getItemAsync(key);
+  },
+  
+  async setItemAsync(key: string, value: string): Promise<void> {
+    if (Platform.OS === 'web') {
+      await AsyncStorage.setItem(key, value);
+    } else {
+      await SecureStore.setItemAsync(key, value);
+    }
+  },
+  
+  async deleteItemAsync(key: string): Promise<void> {
+    if (Platform.OS === 'web') {
+      await AsyncStorage.removeItem(key);
+    } else {
+      await SecureStore.deleteItemAsync(key);
+    }
+  },
+};
 
 const api = axios.create({
   baseURL: API_URL,
@@ -14,7 +42,7 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   async (config) => {
-    const token = await SecureStore.getItemAsync('session_token');
+    const token = await secureStorage.getItemAsync('session_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -31,7 +59,7 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       // Session expired, clear token
-      await SecureStore.deleteItemAsync('session_token');
+      await secureStorage.deleteItemAsync('session_token');
     }
     return Promise.reject(error);
   }
