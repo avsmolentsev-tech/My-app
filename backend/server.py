@@ -514,9 +514,9 @@ async def create_habit(
         reminders=data.reminders
     )
     
-    await db.habits.insert_one(habit.dict())
+    await db.habits.insert_one(serialize_for_mongo(habit))
     
-    return {"message": "Habit created", "habit": habit.dict()}
+    return {"message": "Habit created", "habit": serialize_for_mongo(habit)}
 
 
 @api_router.get("/habits")
@@ -541,7 +541,7 @@ async def update_habit(
     
     await db.habits.update_one(
         {"id": habit_id, "user_id": user_id},
-        {"$set": data.dict()}
+        {"$set": serialize_for_mongo(data)}
     )
     
     return {"message": "Habit updated"}
@@ -587,7 +587,7 @@ async def log_habit(
     
     await db.habit_logs.update_one(
         {"habit_id": habit_id, "user_id": user_id, "date": log_date},
-        {"$set": habit_log.dict()},
+        {"$set": serialize_for_mongo(habit_log)},
         upsert=True
     )
     
@@ -712,9 +712,9 @@ async def generate_summary(
         habits_stats={}
     )
     
-    await db.summaries.insert_one(summary.dict())
+    await db.summaries.insert_one(serialize_for_mongo(summary))
     
-    return {"summary": summary.dict()}
+    return {"summary": serialize_for_mongo(summary)}
 
 
 @api_router.get("/summaries")
