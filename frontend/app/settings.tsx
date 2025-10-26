@@ -80,32 +80,6 @@ export default function SettingsScreen() {
             </View>
             <Ionicons name="chevron-forward" size={24} color={colors.textLight} />
           </TouchableOpacity>
-
-          <View style={styles.divider} />
-
-          <TouchableOpacity
-            style={styles.option}
-            onPress={() => Alert.alert('В разработке', 'Эта функция скоро будет доступна')}
-          >
-            <View style={styles.optionLeft}>
-              <Ionicons name="water-outline" size={24} color={colors.text} />
-              <Text style={styles.optionText}>Настройки воды</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={24} color={colors.textLight} />
-          </TouchableOpacity>
-
-          <View style={styles.divider} />
-
-          <TouchableOpacity
-            style={styles.option}
-            onPress={() => Alert.alert('В разработке', 'Эта функция скоро будет доступна')}
-          >
-            <View style={styles.optionLeft}>
-              <Ionicons name="notifications-outline" size={24} color={colors.text} />
-              <Text style={styles.optionText}>Уведомления</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={24} color={colors.textLight} />
-          </TouchableOpacity>
         </View>
 
         {/* About */}
