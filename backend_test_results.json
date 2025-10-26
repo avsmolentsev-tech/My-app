@@ -3,138 +3,531 @@
     "test": "Health Check",
     "success": true,
     "details": "Backend responding with status 200",
-    "timestamp": "2025-10-26T12:46:55.912927"
+    "timestamp": "2025-10-26T18:41:25.475522"
   },
   {
     "test": "Auth Session Creation",
     "success": true,
     "details": "Expected 500 - Auth service error (External dependency)",
-    "timestamp": "2025-10-26T12:46:56.150667"
+    "timestamp": "2025-10-26T18:41:25.625525"
   },
   {
     "test": "Auth Me (No Token)",
     "success": true,
     "details": "Correctly returns 401 without authentication",
-    "timestamp": "2025-10-26T12:46:56.158500"
+    "timestamp": "2025-10-26T18:41:25.636294"
   },
   {
     "test": "Auth Logout",
     "success": true,
     "details": "Logout endpoint responding correctly",
-    "timestamp": "2025-10-26T12:46:56.204231"
+    "timestamp": "2025-10-26T18:41:25.645797"
   },
   {
-    "test": "Mock Session Setup",
+    "test": "Test Session Setup",
     "success": true,
-    "details": "Created mock session for user test-user-12345",
-    "timestamp": "2025-10-26T12:46:56.204258"
+    "details": "Created test session for user test_user_123",
+    "timestamp": "2025-10-26T18:41:25.695667"
   },
   {
     "test": "Onboarding API",
     "success": true,
-    "details": "Correctly requires authentication (401)",
-    "timestamp": "2025-10-26T12:46:56.216242"
+    "details": "Onboarding data saved successfully",
+    "timestamp": "2025-10-26T18:41:25.707393",
+    "response": {
+      "message": "Onboarding completed",
+      "settings": {
+        "user_id": "test_user_123",
+        "avg_cycle_length": 28,
+        "period_length": 5,
+        "luteal_length": 14,
+        "last_period_start": "2025-01-15",
+        "updated_at": "2025-10-26T18:41:25.703944"
+      }
+    }
   },
   {
     "test": "GET Cycle Settings",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.263318"
+    "details": "Settings retrieved successfully",
+    "timestamp": "2025-10-26T18:41:25.716520",
+    "response": {
+      "user_id": "test_user_123",
+      "avg_cycle_length": 28,
+      "period_length": 5,
+      "luteal_length": 14,
+      "last_period_start": "2025-01-15",
+      "updated_at": "2025-10-26T18:41:25.703944"
+    }
   },
   {
     "test": "PUT Cycle Settings",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.271506"
+    "details": "Settings updated successfully",
+    "timestamp": "2025-10-26T18:41:25.766651",
+    "response": {
+      "message": "Settings updated",
+      "settings": {
+        "user_id": "test_user_123",
+        "avg_cycle_length": 30,
+        "period_length": 6,
+        "luteal_length": 12,
+        "last_period_start": "2025-01-20",
+        "updated_at": "2025-10-26T18:41:25.722133"
+      }
+    }
   },
   {
     "test": "GET Cycle Today",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.319545"
+    "details": "Today's cycle info retrieved",
+    "timestamp": "2025-10-26T18:41:25.776101",
+    "response": {
+      "has_settings": true,
+      "cycle_day": 280,
+      "dpo": 261,
+      "is_period": false,
+      "is_fertile_window": false,
+      "is_ovulation": false,
+      "days_until_ovulation": null,
+      "next_period_date": "2025-02-19",
+      "ovulation_date": "2025-02-07"
+    }
   },
   {
     "test": "GET Cycle Calendar",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.326128"
+    "details": "Calendar data retrieved (31 days)",
+    "timestamp": "2025-10-26T18:41:25.785249"
   },
   {
     "test": "GET Cycle Reminders",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.376213"
+    "details": "Reminders retrieved",
+    "timestamp": "2025-10-26T18:41:25.834504",
+    "response": {
+      "reminders": [
+        {
+          "date": "2025-02-04",
+          "message": "\u0427\u0435\u0440\u0435\u0437 3 \u0434\u043d\u044f \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u0430 \u043e\u0432\u0443\u043b\u044f\u0446\u0438\u044f. \u041f\u0440\u043e\u0432\u0435\u0440\u044c \u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u0438 \u0441\u0430\u043c\u043e\u0447\u0443\u0432\u0441\u0442\u0432\u0438\u0435.",
+          "days_before": 3
+        },
+        {
+          "date": "2025-02-05",
+          "message": "\u0427\u0435\u0440\u0435\u0437 2 \u0434\u043d\u044f \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u0430 \u043e\u0432\u0443\u043b\u044f\u0446\u0438\u044f. \u041f\u0440\u043e\u0432\u0435\u0440\u044c \u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u0438 \u0441\u0430\u043c\u043e\u0447\u0443\u0432\u0441\u0442\u0432\u0438\u0435.",
+          "days_before": 2
+        },
+        {
+          "date": "2025-02-06",
+          "message": "\u0417\u0430\u0432\u0442\u0440\u0430 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u0430 \u043e\u0432\u0443\u043b\u044f\u0446\u0438\u044f. \u041f\u0440\u043e\u0432\u0435\u0440\u044c \u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u0438 \u0441\u0430\u043c\u043e\u0447\u0443\u0432\u0441\u0442\u0432\u0438\u0435.",
+          "days_before": 1
+        },
+        {
+          "date": "2025-02-07",
+          "message": "\u0421\u0435\u0433\u043e\u0434\u043d\u044f \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u0430 \u043e\u0432\u0443\u043b\u044f\u0446\u0438\u044f (\u043e\u0440\u0438\u0435\u043d\u0442\u0438\u0440\u043e\u0432\u043e\u0447\u043d\u043e).",
+          "days_before": 0
+        }
+      ]
+    }
   },
   {
     "test": "GET Water Today",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.381594"
+    "details": "Water data retrieved",
+    "timestamp": "2025-10-26T18:41:25.843546",
+    "response": {
+      "user_id": "test_user_123",
+      "date": "2025-10-26",
+      "consumed_ml": 5750,
+      "goal_ml": 2000,
+      "glass_ml": 250,
+      "log": [
+        {
+          "time": "2025-10-26T14:05:36.962081+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:05:38.708027+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:05:42.324030+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:05:44.244595+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:05:46.146560+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:05:48.521051+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:05:58.618149+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:06:01.384583+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:06:04.262282+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:06:05.056829+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:06:50.535048+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:08:18.638204+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T14:32:01.597722+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:23:05.072789+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:26:33.250453+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:39:20.711472+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:39:21.674550+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:39:22.539676+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:40:22.751423+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:44:51.635295+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:44:55.667445+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T17:44:58.733887+00:00",
+          "ml": 250
+        },
+        {
+          "time": "2025-10-26T18:17:47.691577+00:00",
+          "ml": 250
+        }
+      ],
+      "updated_at": "2025-10-26T18:17:47.691000"
+    }
   },
   {
     "test": "POST Water Add",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.427986"
+    "details": "Water added: 6000ml",
+    "timestamp": "2025-10-26T18:41:25.853450",
+    "response": {
+      "consumed_ml": 6000,
+      "goal_ml": 2000
+    }
   },
   {
     "test": "PUT Water Settings",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.477975"
+    "details": "Water settings updated",
+    "timestamp": "2025-10-26T18:41:25.904698",
+    "response": {
+      "message": "Water settings updated"
+    }
   },
   {
     "test": "GET Daily Tip",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.525118"
+    "details": "AI tip generated (45 chars): \u0417\u0430\u043f\u0438\u0448\u0438 3 \u0432\u0435\u0449\u0438, \u0437\u0430 \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u043d\u0430 \u0441\u0435\u0433\u043e\u0434\u043d\u044f....",
+    "timestamp": "2025-10-26T18:41:25.914657",
+    "response": {
+      "tip": "\u0417\u0430\u043f\u0438\u0448\u0438 3 \u0432\u0435\u0449\u0438, \u0437\u0430 \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u043d\u0430 \u0441\u0435\u0433\u043e\u0434\u043d\u044f.",
+      "timestamp": "2025-10-26T18:41:25.911808+00:00"
+    }
   },
   {
     "test": "POST Journal Entry",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.530636"
+    "details": "Journal entry saved successfully",
+    "timestamp": "2025-10-26T18:41:25.969001",
+    "response": {
+      "message": "Journal entry saved",
+      "entry": {
+        "user_id": "test_user_123",
+        "date": "2025-01-25",
+        "cycle_day": 6,
+        "predicted_ovulation_date": "2025-02-07",
+        "good_1": "Had a productive morning workout",
+        "good_2": "Enjoyed a healthy breakfast with friends",
+        "good_3": "Completed an important project at work",
+        "self_praise": "I'm proud of staying consistent with my goals",
+        "mood": 8,
+        "energy": 7,
+        "notes": "Feeling grateful and energized today. The weather was perfect for a walk.",
+        "water_ml_total": 0,
+        "water_target_ml": 2000,
+        "habits_json": {},
+        "created_at": "2025-10-26T18:41:25.922560"
+      }
+    }
   },
   {
     "test": "GET Journal Entries",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.576090"
+    "details": "Retrieved 2 journal entries",
+    "timestamp": "2025-10-26T18:41:25.979070",
+    "response": {
+      "entries": [
+        {
+          "date": "2025-10-26",
+          "user_id": "test_user_123",
+          "created_at": "2025-10-26T13:35:07.983366",
+          "cycle_day": 26,
+          "energy": 7,
+          "good_1": "\u0411\u044b\u043b \u043d\u0430 \u043f\u043b\u044f\u0436\u0435 \u041a\u0430\u043f\u0443\u0442\u0430\u0436",
+          "good_2": "\u0413\u0443\u043b\u044f\u043b \u043f\u043e \u041a\u0430\u0448\u0443",
+          "good_3": "\u0417\u0430\u0432\u0442\u0440\u0430\u043a\u0430\u043b \u0432 \u043a\u0440\u0430\u0441\u0438\u0432\u043e\u043c \u043c\u0435\u0441\u0442\u0435",
+          "habits_json": {},
+          "mood": 7,
+          "notes": "",
+          "predicted_ovulation_date": "2025-10-15",
+          "self_praise": "\u0412\u0441\u0435\u0445 \u043e\u0442\u0432\u0435\u0437",
+          "water_ml_total": 0,
+          "water_target_ml": 2000
+        },
+        {
+          "date": "2025-01-25",
+          "user_id": "test_user_123",
+          "created_at": "2025-10-26T18:41:25.922560",
+          "cycle_day": 6,
+          "energy": 7,
+          "good_1": "Had a productive morning workout",
+          "good_2": "Enjoyed a healthy breakfast with friends",
+          "good_3": "Completed an important project at work",
+          "habits_json": {},
+          "mood": 8,
+          "notes": "Feeling grateful and energized today. The weather was perfect for a walk.",
+          "predicted_ovulation_date": "2025-02-07",
+          "self_praise": "I'm proud of staying consistent with my goals",
+          "water_ml_total": 0,
+          "water_target_ml": 2000
+        }
+      ]
+    }
   },
   {
     "test": "GET Journal Entry by Date",
-    "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.622081"
+    "success": false,
+    "details": "Status: 500",
+    "timestamp": "2025-10-26T18:41:25.999895"
   },
   {
     "test": "POST Create Habit",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.629829"
+    "details": "Habit created with ID: 44129b06-f0f1-46cd-9fc1-08b0f96d63c5",
+    "timestamp": "2025-10-26T18:41:26.011984",
+    "response": {
+      "message": "Habit created",
+      "habit": {
+        "id": "44129b06-f0f1-46cd-9fc1-08b0f96d63c5",
+        "user_id": "test_user_123",
+        "title": "Daily Meditation",
+        "type": "boolean",
+        "target": null,
+        "days_of_week": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "reminders": [
+          "08:00",
+          "20:00"
+        ],
+        "created_at": "2025-10-26T18:41:26.006615",
+        "is_active": true
+      }
+    }
   },
   {
     "test": "GET Habits",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.676205"
+    "details": "Retrieved 2 habits",
+    "timestamp": "2025-10-26T18:41:26.061588",
+    "response": {
+      "habits": [
+        {
+          "id": "f8a98458-428c-4dfb-a65a-a90a2491a959",
+          "user_id": "test_user_123",
+          "title": "\u041e\u0442\u0436\u0438\u043c\u0430\u0442\u044c\u0441\u044f",
+          "type": "quantitative",
+          "target": 100.0,
+          "days_of_week": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "reminders": [],
+          "created_at": "2025-10-26T14:17:45.522941",
+          "is_active": true
+        },
+        {
+          "id": "44129b06-f0f1-46cd-9fc1-08b0f96d63c5",
+          "user_id": "test_user_123",
+          "title": "Daily Meditation",
+          "type": "boolean",
+          "target": null,
+          "days_of_week": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "reminders": [
+            "08:00",
+            "20:00"
+          ],
+          "created_at": "2025-10-26T18:41:26.006615",
+          "is_active": true
+        }
+      ]
+    }
   },
   {
-    "test": "Habit Logging Tests",
+    "test": "POST Habit Log",
     "success": true,
-    "details": "Skipped - no habit ID available",
-    "timestamp": "2025-10-26T12:46:56.676229"
+    "details": "Habit 44129b06-f0f1-46cd-9fc1-08b0f96d63c5 logged successfully",
+    "timestamp": "2025-10-26T18:41:26.074557",
+    "response": {
+      "message": "Habit logged"
+    }
+  },
+  {
+    "test": "GET Habit Logs",
+    "success": true,
+    "details": "Retrieved 1 habit logs",
+    "timestamp": "2025-10-26T18:41:26.086120",
+    "response": {
+      "logs": [
+        {
+          "date": "2025-10-26",
+          "user_id": "test_user_123",
+          "habit_id": "44129b06-f0f1-46cd-9fc1-08b0f96d63c5",
+          "completed": true,
+          "created_at": "2025-10-26T18:41:26.068823",
+          "value": null
+        }
+      ]
+    }
   },
   {
     "test": "GET Generate Summary",
     "success": true,
-    "details": "Correctly requires authentication",
-    "timestamp": "2025-10-26T12:46:56.681822"
+    "details": "Monthly summary generated successfully",
+    "timestamp": "2025-10-26T18:41:26.136733",
+    "response": {
+      "summary": {
+        "user_id": "test_user_123",
+        "period_type": "monthly",
+        "start_date": "2025-10-01",
+        "end_date": "2025-10-26",
+        "positive_entries_count": 1,
+        "avg_mood": 7.0,
+        "avg_energy": 7.0,
+        "water_goal_days": 0,
+        "top_themes": [],
+        "best_entries": [
+          "\u0421\u0432\u043e\u0434\u043a\u0430 \u043f\u043e 1 \u0437\u0430\u043f\u0438\u0441\u044f\u043c. \u0421\u0440\u0435\u0434\u043d\u044f\u044f \u043e\u0446\u0435\u043d\u043a\u0430 \u043d\u0430\u0441\u0442\u0440\u043e\u0435\u043d\u0438\u044f: 7.0 \u0438\u0437 10."
+        ],
+        "habits_stats": {},
+        "created_at": "2025-10-26T18:41:26.090975"
+      }
+    }
   },
   {
     "test": "GET Summary Invalid Period",
     "success": true,
-    "details": "Auth check works before validation",
-    "timestamp": "2025-10-26T12:46:56.728104"
+    "details": "Correctly rejects invalid period type",
+    "timestamp": "2025-10-26T18:41:26.145435"
+  },
+  {
+    "test": "DELETE Habit - Create Test Habit",
+    "success": true,
+    "details": "Test habit created with ID: cb6d38d7-285e-46f6-823b-6527fdfbeea0",
+    "timestamp": "2025-10-26T18:41:26.153674"
+  },
+  {
+    "test": "DELETE Habit - Create Habit Log",
+    "success": true,
+    "details": "Habit log created for testing",
+    "timestamp": "2025-10-26T18:41:26.205511"
+  },
+  {
+    "test": "DELETE Habit - Verify Exists Before",
+    "success": true,
+    "details": "Habit exists in database before deletion",
+    "timestamp": "2025-10-26T18:41:26.214473"
+  },
+  {
+    "test": "DELETE Habit - Delete Request",
+    "success": true,
+    "details": "Habit deleted successfully. Message: Habit deleted successfully, Count: 1",
+    "timestamp": "2025-10-26T18:41:26.222651"
+  },
+  {
+    "test": "DELETE Habit - Verify Deleted",
+    "success": true,
+    "details": "Habit successfully removed from database",
+    "timestamp": "2025-10-26T18:41:26.230417"
+  },
+  {
+    "test": "DELETE Habit - Verify Logs Deleted",
+    "success": true,
+    "details": "Habit logs successfully deleted",
+    "timestamp": "2025-10-26T18:41:26.279403"
+  },
+  {
+    "test": "DELETE Habit - Non-existent",
+    "success": true,
+    "details": "Correctly returns 404 for non-existent habit",
+    "timestamp": "2025-10-26T18:41:26.328997"
+  },
+  {
+    "test": "DELETE Habit - No Auth",
+    "success": false,
+    "details": "Expected 401, got 404",
+    "timestamp": "2025-10-26T18:41:26.338429"
   }
 ]
