@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,9 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Modal,
+  TextInput,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
@@ -17,8 +20,15 @@ import { colors, spacing, typography, borderRadius, shadows } from '../constants
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import { tipsAPI } from '../services/api';
+import { tipsAPI, journalAPI, cycleAPI } from '../services/api';
 import * as Haptics from 'expo-haptics';
+import * as Notifications from 'expo-notifications';
+import { 
+  registerForPushNotificationsAsync,
+  scheduleOvulationReminders,
+  scheduleDailyTips,
+  scheduleWaterReminders
+} from '../services/notifications';
 
 export default function HomeScreen() {
   const router = useRouter();
