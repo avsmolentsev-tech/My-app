@@ -366,11 +366,11 @@ async def create_journal_entry(
     # Upsert
     await db.journal_entries.update_one(
         {"user_id": user_id, "date": entry_date.isoformat()},
-        {"$set": entry.dict()},
+        {"$set": serialize_for_mongo(entry)},
         upsert=True
     )
     
-    return {"message": "Journal entry saved", "entry": entry.dict()}
+    return {"message": "Journal entry saved", "entry": serialize_for_mongo(entry)}
 
 
 @api_router.get("/journal")
