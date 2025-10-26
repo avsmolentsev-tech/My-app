@@ -516,6 +516,22 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
     marginLeft: spacing.sm,
   },
+  habitButton: {
+    flexDirection: 'row',
+    backgroundColor: colors.secondary,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing.sm,
+  },
+  habitButtonText: {
+    ...typography.body,
+    color: colors.white,
+    marginLeft: spacing.sm,
+    fontWeight: '600',
+  },
   habitHint: {
     ...typography.caption,
     color: colors.textLight,
