@@ -207,7 +207,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'stretch',
-    marginBottom: spacing.lg,
+    marginBottom: spacing.md,
+  },
+  testLoginButton: {
+    backgroundColor: colors.white,
+    borderWidth: 2,
+    borderColor: colors.primary,
   },
   googleIcon: {
     marginRight: spacing.sm,
@@ -216,6 +221,9 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.white,
     fontWeight: '600',
+  },
+  testLoginText: {
+    color: colors.primary,
   },
   disclaimer: {
     ...typography.caption,
