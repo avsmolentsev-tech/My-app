@@ -90,21 +90,57 @@ class CycleTrackingAPITester:
             await self.log_result("Auth Endpoints", False, f"Error testing auth: {str(e)}")
     
     async def create_mock_session(self):
-        """Create a mock session for testing protected endpoints"""
-        # For testing purposes, we'll create a mock user and session directly
-        mock_user_id = "test-user-12345"
-        mock_session_token = "mock-session-token-67890"
-        
-        self.user_id = mock_user_id
-        self.session_token = mock_session_token
-        
-        # Set up headers for authenticated requests
-        self.auth_headers = {
-            "Authorization": f"Bearer {mock_session_token}",
-            "Content-Type": "application/json"
-        }
-        
-        await self.log_result("Mock Session Setup", True, f"Created mock session for user {mock_user_id}")
+        """Create a test session using the test-login endpoint"""
+        try:
+            # Use the test-login endpoint to get a real session
+            response = await self.client.post(f"{API_BASE}/auth/test-login")
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.user_id = data.get("id")
+                self.session_token = data.get("session_token")
+                
+                # Set up headers for authenticated requests
+                self.auth_headers = {
+                    "Authorization": f"Bearer {self.session_token}",
+                    "Content-Type": "application/json"
+                }
+                
+                await self.log_result("Test Session Setup", True, f"Created test session for user {self.user_id}")
+                return True
+            else:
+                await self.log_result("Test Session Setup", False, f"Failed to create test session: {response.status_code}")
+                # Fallback to mock session
+                mock_user_id = "test-user-12345"
+                mock_session_token = "mock-session-token-67890"
+                
+                self.user_id = mock_user_id
+                self.session_token = mock_session_token
+                
+                self.auth_headers = {
+                    "Authorization": f"Bearer {mock_session_token}",
+                    "Content-Type": "application/json"
+                }
+                
+                await self.log_result("Mock Session Fallback", True, f"Using mock session for user {mock_user_id}")
+                return False
+                
+        except Exception as e:
+            await self.log_result("Test Session Setup", False, f"Error creating test session: {str(e)}")
+            # Fallback to mock session
+            mock_user_id = "test-user-12345"
+            mock_session_token = "mock-session-token-67890"
+            
+            self.user_id = mock_user_id
+            self.session_token = mock_session_token
+            
+            self.auth_headers = {
+                "Authorization": f"Bearer {mock_session_token}",
+                "Content-Type": "application/json"
+            }
+            
+            await self.log_result("Mock Session Fallback", True, f"Using mock session for user {mock_user_id}")
+            return False
     
     async def test_onboarding_api(self):
         """Test onboarding endpoint"""
