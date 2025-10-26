@@ -63,6 +63,37 @@ export default function HomeScreen() {
     await addWater(glass);
   };
 
+  const handleWaterSwipe = async (direction: 'right' | 'left') => {
+    if (direction === 'right') {
+      // Свайп вправо = добавить стакан
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      await addWater(glass);
+    } else {
+      // Свайп влево = пропустил (просто вибрация)
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+    }
+  };
+
+  const onWaterGestureEvent = Animated.event(
+    [{ nativeEvent: { translationX: new Animated.Value(0) } }],
+    { useNativeDriver: true }
+  );
+
+  const onWaterHandlerStateChange = (event: any) => {
+    if (event.nativeEvent.state === State.END) {
+      const { translationX, velocityX } = event.nativeEvent;
+      
+      // Определяем направление свайпа
+      if (Math.abs(translationX) > 50 || Math.abs(velocityX) > 500) {
+        if (translationX > 0) {
+          handleWaterSwipe('right');
+        } else {
+          handleWaterSwipe('left');
+        }
+      }
+    }
+  };
+
   const waterProgress = Math.min((consumed / goal) * 100, 100);
 
   return (
