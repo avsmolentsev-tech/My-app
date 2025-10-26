@@ -85,7 +85,20 @@ export default function LoginScreen() {
       const data = await response.json();
       
       if (data.session_token) {
-        await login(data.session_token);
+        // Сохранить токен напрямую
+        const { secureStorage } = await import('../services/api');
+        await secureStorage.setItemAsync('session_token', data.session_token);
+        
+        // Установить пользователя в store
+        const { useAuthStore } = await import('../store/useAuthStore');
+        useAuthStore.getState().setUser({
+          id: data.id,
+          email: data.email,
+          name: data.name,
+          picture: data.picture,
+        });
+        
+        // Перейти на онбординг
         router.replace('/onboarding');
       }
     } catch (error) {
