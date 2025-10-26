@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore, useWaterStore } from '../store/useAuthStore';
@@ -16,6 +17,7 @@ import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { tipsAPI } from '../services/api';
 import * as Haptics from 'expo-haptics';
+import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 export default function HomeScreen() {
   const router = useRouter();
