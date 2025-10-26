@@ -127,6 +127,7 @@ export default function HomeScreen() {
   };
 
   const handleHabitDelete = async (habitId: string, habitTitle: string) => {
+    console.log('Delete habit clicked:', habitId, habitTitle);
     Alert.alert(
       'Удалить привычку?',
       `Вы уверены, что хотите удалить "${habitTitle}"?`,
@@ -136,14 +137,17 @@ export default function HomeScreen() {
           text: 'Удалить',
           style: 'destructive',
           onPress: async () => {
+            console.log('Delete confirmed, calling API...');
             try {
               const { habitsAPI } = await import('../services/api');
-              await habitsAPI.delete(habitId);
+              console.log('Calling habitsAPI.delete:', habitId);
+              const result = await habitsAPI.delete(habitId);
+              console.log('Delete result:', result);
               await loadHabits();
               Alert.alert('Успешно', 'Привычка удалена');
             } catch (error) {
               console.error('Error deleting habit:', error);
-              Alert.alert('Ошибка', 'Не удалось удалить привычку');
+              Alert.alert('Ошибка', `Не удалось удалить привычку: ${error}`);
             }
           },
         },
