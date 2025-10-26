@@ -1,22 +1,42 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "CycleWise",
+    "slug": "cyclewise",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "frontend",
+    "scheme": "cyclewise",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FDFCFB"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cyclewise.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Приложение использует камеру для добавления фото в дневник.",
+        "NSCalendarsUsageDescription": "Приложение синхронизирует данные цикла с вашим календарём.",
+        "NSRemindersUsageDescription": "Приложение создаёт напоминания о цикле.",
+        "NSHealthShareUsageDescription": "Приложение читает данные о водном балансе из Health.",
+        "NSHealthUpdateUsageDescription": "Приложение записывает данные о водном балансе в Health."
+      }
     },
     "android": {
+      "package": "com.cyclewise.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#000"
+        "backgroundColor": "#FDFCFB"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "READ_CALENDAR",
+        "WRITE_CALENDAR"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -25,18 +45,34 @@
     },
     "plugins": [
       "expo-router",
+      "expo-secure-store",
       [
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#000"
+          "backgroundColor": "#FDFCFB"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#E8B4D4"
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "your-project-id-here"
+      }
     }
   }
 }
