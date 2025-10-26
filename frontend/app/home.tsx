@@ -181,32 +181,37 @@ export default function HomeScreen() {
       </View>
 
       {/* Water Tracker */}
-      <View style={[styles.card, styles.waterCard]}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="water" size={24} color={colors.water} />
-          <Text style={styles.cardTitle}>Вода сегодня</Text>
-        </View>
-        
-        <View style={styles.waterProgress}>
-          <View style={styles.progressBar}>
-            <View style={[styles.progressFill, { width: `${waterProgress}%` }]} />
+      <PanGestureHandler
+        onGestureEvent={onWaterGestureEvent}
+        onHandlerStateChange={onWaterHandlerStateChange}
+      >
+        <Animated.View style={[styles.card, styles.waterCard]}>
+          <View style={styles.cardHeader}>
+            <Ionicons name="water" size={24} color={colors.water} />
+            <Text style={styles.cardTitle}>Вода сегодня</Text>
           </View>
-          <Text style={styles.waterText}>
-            {consumed} / {goal} мл ({Math.round(waterProgress)}%)
-          </Text>
-        </View>
-        
-        <TouchableOpacity
-          style={styles.waterButton}
-          onPress={handleAddWater}
-          activeOpacity={0.8}
-        >
-          <Ionicons name="add" size={24} color={colors.white} />
-          <Text style={styles.waterButtonText}>Добавить стакан ({glass} мл)</Text>
-        </TouchableOpacity>
-        
-        <Text style={styles.waterHint}>Или свайпните вправо на карточке</Text>
-      </View>
+          
+          <View style={styles.waterProgress}>
+            <View style={styles.progressBar}>
+              <View style={[styles.progressFill, { width: `${waterProgress}%` }]} />
+            </View>
+            <Text style={styles.waterText}>
+              {consumed} / {goal} мл ({Math.round(waterProgress)}%)
+            </Text>
+          </View>
+          
+          <TouchableOpacity
+            style={styles.waterButton}
+            onPress={handleAddWater}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="add" size={24} color={colors.white} />
+            <Text style={styles.waterButtonText}>Добавить стакан ({glass} мл)</Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.waterHint}>👉 Свайпни карточку вправо чтобы добавить стакан</Text>
+        </Animated.View>
+      </PanGestureHandler>
 
       {/* Quick Actions */}
       <View style={styles.actions}>
