@@ -133,6 +133,15 @@ export default function LoginScreen() {
           <Text style={styles.loginButtonText}>Войти через Google</Text>
         </TouchableOpacity>
         
+        <TouchableOpacity
+          style={[styles.loginButton, styles.testLoginButton]}
+          onPress={handleTestLogin}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="flask" size={24} color={colors.primary} style={styles.googleIcon} />
+          <Text style={[styles.loginButtonText, styles.testLoginText]}>Тестовый вход (для проверки)</Text>
+        </TouchableOpacity>
+        
         <Text style={styles.disclaimer}>
           Это приложение носит информационный характер и не является медицинским изделием или методом контрацепции. По вопросам здоровья обратитесь к врачу.
         </Text>
