@@ -10,6 +10,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
 import { useAuthStore, useWaterStore } from '../store/useAuthStore';
 import { colors, spacing, typography, borderRadius, shadows } from '../constants/theme';
