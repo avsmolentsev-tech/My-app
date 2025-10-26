@@ -60,6 +60,59 @@ api_router = APIRouter(prefix="/api")
 
 # ============= AUTH ENDPOINTS =============
 
+@api_router.post("/auth/test-login")
+async def test_login():
+    """Временный тестовый вход без Google OAuth"""
+    
+    # Создаём тестового пользователя
+    test_user_id = "test_user_123"
+    test_email = "test@example.com"
+    
+    # Проверяем существует ли пользователь
+    user = await db.users.find_one({"email": test_email})
+    
+    if not user:
+        # Создаём тестового пользователя
+        user_obj = User(
+            id=test_user_id,
+            email=test_email,
+            name="Тестовый Пользователь"
+        )
+        await db.users.insert_one(user_obj.dict())
+    
+    # Создаём тестовую сессию
+    test_token = f"test_token_{uuid.uuid4()}"
+    expires_at = datetime.now(timezone.utc) + timedelta(days=30)
+    
+    session = UserSession(
+        user_id=test_user_id,
+        session_token=test_token,
+        expires_at=expires_at
+    )
+    
+    await db.user_sessions.insert_one(session.dict())
+    
+    # Возвращаем данные
+    response = JSONResponse(content={
+        "id": test_user_id,
+        "email": test_email,
+        "name": "Тестовый Пользователь",
+        "session_token": test_token
+    })
+    
+    response.set_cookie(
+        key="session_token",
+        value=test_token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=30 * 24 * 60 * 60,
+        path="/"
+    )
+    
+    return response
+
+
 @api_router.post("/auth/session")
 async def process_session(
     request: Request,
