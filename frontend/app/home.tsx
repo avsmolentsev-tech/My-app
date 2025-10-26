@@ -32,17 +32,58 @@ import {
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { user, todayInfo, fetchTodayInfo } = useAuthStore();
+  const { user, todayInfo, fetchTodayInfo, cycleSettings } = useAuthStore();
   const { consumed, goal, glass, fetchToday, addWater } = useWaterStore();
   const [refreshing, setRefreshing] = useState(false);
   const [dailyTip, setDailyTip] = useState<string>('');
   const [loadingTip, setLoadingTip] = useState(true);
   const [habits, setHabits] = useState<any[]>([]);
   const [habitLogs, setHabitLogs] = useState<Record<string, any>>({});
+  const [showJournalModal, setShowJournalModal] = useState(false);
+  const notificationListener = useRef<any>();
+  const responseListener = useRef<any>();
 
   useEffect(() => {
     loadData();
+    setupNotifications();
+    
+    // Обработка нажатий на уведомления
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      console.log('Notification received:', notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      const data = response.notification.request.content.data;
+      if (data.type === 'evening_journal') {
+        setShowJournalModal(true);
+      }
+    });
+
+    return () => {
+      if (notificationListener.current) {
+        Notifications.removeNotificationSubscription(notificationListener.current);
+      }
+      if (responseListener.current) {
+        Notifications.removeNotificationSubscription(responseListener.current);
+      }
+    };
   }, []);
+
+  const setupNotifications = async () => {
+    try {
+      await registerForPushNotificationsAsync();
+      await scheduleDailyTips();
+      await scheduleWaterReminders();
+      
+      // Если есть настройки цикла, планируем уведомления об овуляции
+      if (cycleSettings && todayInfo?.ovulation_date) {
+        const ovulationDate = new Date(todayInfo.ovulation_date);
+        await scheduleOvulationReminders(ovulationDate);
+      }
+    } catch (error) {
+      console.error('Error setting up notifications:', error);
+    }
+  };
 
   const loadData = async () => {
     await Promise.all([
