@@ -6,7 +6,7 @@ import { Platform } from 'react-native';
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL + '/api';
 
 // Cross-platform secure storage
-const secureStorage = {
+export const secureStorage = {
   async getItemAsync(key: string): Promise<string | null> {
     if (Platform.OS === 'web') {
       return await AsyncStorage.getItem(key);
