@@ -58,7 +58,7 @@ export default function OnboardingScreen() {
     setLoading(true);
     try {
       await cycleAPI.saveOnboarding({
-        last_period_start: format(lastPeriodDate, 'yyyy-MM-dd'),
+        last_period_start: lastPeriodDateString,
         avg_cycle_length: parseInt(avgCycleLength),
         period_length: parseInt(periodLength),
         luteal_length: parseInt(lutealLength),
@@ -95,29 +95,58 @@ export default function OnboardingScreen() {
         </View>
 
         <View style={styles.form}>
-          {/* Date Picker */}
+          {/* Date Picker - Platform specific */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Дата начала последней менструации</Text>
-            <TouchableOpacity
-              style={styles.dateButton}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <Ionicons name="calendar-outline" size={24} color={colors.primary} />
-              <Text style={styles.dateButtonText}>
-                {format(lastPeriodDate, 'dd MMMM yyyy', { locale: ru })}
-              </Text>
-            </TouchableOpacity>
-            {showDatePicker && (
-              <DateTimePicker
-                value={lastPeriodDate}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                onChange={handleDateChange}
-                maximumDate={new Date()}
-                minimumDate={subDays(new Date(), 90)}
+            
+            {Platform.OS === 'web' ? (
+              // Web: Use HTML date input
+              <input
+                type="date"
+                value={lastPeriodDateString}
+                onChange={(e) => handleWebDateChange(e.target.value)}
+                max={format(new Date(), 'yyyy-MM-dd')}
+                min={format(subDays(new Date(), 90), 'yyyy-MM-dd')}
+                style={{
+                  ...typography.body,
+                  backgroundColor: colors.white,
+                  borderWidth: 1,
+                  borderColor: colors.gray300,
+                  borderRadius: borderRadius.md,
+                  padding: spacing.md,
+                  color: colors.text,
+                  border: `1px solid ${colors.gray300}`,
+                  borderRadius: `${borderRadius.md}px`,
+                  fontSize: '16px',
+                  fontFamily: 'inherit',
+                }}
               />
+            ) : (
+              // Mobile: Use native DateTimePicker
+              <>
+                <TouchableOpacity
+                  style={styles.dateButton}
+                  onPress={() => setShowDatePicker(true)}
+                >
+                  <Ionicons name="calendar-outline" size={24} color={colors.primary} />
+                  <Text style={styles.dateButtonText}>
+                    {format(lastPeriodDate, 'dd MMMM yyyy', { locale: ru })}
+                  </Text>
+                </TouchableOpacity>
+                {showDatePicker && (
+                  <DateTimePicker
+                    value={lastPeriodDate}
+                    mode="date"
+                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    onChange={handleDateChange}
+                    maximumDate={new Date()}
+                    minimumDate={subDays(new Date(), 90)}
+                  />
+                )}
+              </>
             )}
-            <Text style={styles.hint}>Нажмите чтобы выбрать дату</Text>
+            
+            <Text style={styles.hint}>Выберите дату начала последних месячных</Text>
           </View>
 
           <View style={styles.inputGroup}>
