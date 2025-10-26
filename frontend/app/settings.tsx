@@ -17,6 +17,7 @@ export default function SettingsScreen() {
   const { user, logout } = useAuthStore();
 
   const handleLogout = async () => {
+    console.log('Logout button clicked');
     Alert.alert(
       'Выход',
       'Вы уверены, что хотите выйти?',
@@ -26,11 +27,15 @@ export default function SettingsScreen() {
           text: 'Выйти',
           style: 'destructive',
           onPress: async () => {
+            console.log('Logout confirmed, calling logout...');
             try {
+              console.log('Calling logout function...');
               await logout();
+              console.log('Logout successful, navigating to login...');
               router.replace('/login');
             } catch (error) {
               console.error('Logout error:', error);
+              // Даже если есть ошибка, всё равно выходим
               router.replace('/login');
             }
           },
