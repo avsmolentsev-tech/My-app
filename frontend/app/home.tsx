@@ -587,6 +587,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
+  habitHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  deleteButton: {
+    padding: spacing.xs,
+    marginLeft: spacing.sm,
+  },
   habitHint: {
     ...typography.caption,
     color: colors.textLight,
