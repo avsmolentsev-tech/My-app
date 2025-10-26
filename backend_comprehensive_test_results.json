@@ -2,73 +2,109 @@
   {
     "test": "Database Setup",
     "success": true,
-    "details": "Created test user test-user-800ddabb-3b8c-4b05-a0ac-6119ae043d8b with valid session",
-    "timestamp": "2025-10-26T12:26:19.738615"
+    "details": "Created test user test-user-80308c08-2e17-420e-8435-87d97a27f61e with valid session",
+    "timestamp": "2025-10-26T12:26:53.016604"
   },
   {
     "test": "Health Check",
     "success": true,
     "details": "Backend responding with status 200",
-    "timestamp": "2025-10-26T12:26:20.855050"
+    "timestamp": "2025-10-26T12:26:54.046750"
   },
   {
     "test": "Auth Me (Valid Session)",
-    "success": false,
-    "details": "Status: 500, Response: Internal Server Error",
-    "timestamp": "2025-10-26T12:26:20.867922"
+    "success": true,
+    "details": "Successfully retrieved user data",
+    "timestamp": "2025-10-26T12:26:54.067344",
+    "response": {
+      "id": "test-user-80308c08-2e17-420e-8435-87d97a27f61e",
+      "email": "test@example.com",
+      "name": "Test User",
+      "picture": null,
+      "created_at": "2025-10-26T12:26:53.011000"
+    }
   },
   {
     "test": "Onboarding Flow",
     "success": false,
     "details": "Status: 500, Response: Internal Server Error",
-    "timestamp": "2025-10-26T12:26:20.887088"
+    "timestamp": "2025-10-26T12:26:54.082211"
   },
   {
     "test": "GET Water Today",
     "success": false,
     "details": "Status: 500",
-    "timestamp": "2025-10-26T12:26:20.901940"
+    "timestamp": "2025-10-26T12:26:54.102088"
   },
   {
     "test": "POST Journal Entry",
     "success": false,
     "details": "Status: 500, Response: Internal Server Error",
-    "timestamp": "2025-10-26T12:26:20.916343"
+    "timestamp": "2025-10-26T12:26:54.116270"
   },
   {
     "test": "POST Create Habit",
-    "success": false,
-    "details": "Status: 500",
-    "timestamp": "2025-10-26T12:26:20.970616"
+    "success": true,
+    "details": "Habit created with ID: d01a030f-e664-4ef2-918b-03c2b6dcbf88",
+    "timestamp": "2025-10-26T12:26:54.137773",
+    "response": {
+      "message": "Habit created",
+      "habit": {
+        "id": "d01a030f-e664-4ef2-918b-03c2b6dcbf88",
+        "user_id": "test-user-80308c08-2e17-420e-8435-87d97a27f61e",
+        "title": "Daily Meditation Practice",
+        "type": "boolean",
+        "target": null,
+        "days_of_week": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "reminders": [
+          "08:00",
+          "20:00"
+        ],
+        "created_at": "2025-10-26T12:26:54.124674",
+        "is_active": true
+      }
+    }
   },
   {
     "test": "GET Habits",
     "success": false,
     "details": "Status: 500",
-    "timestamp": "2025-10-26T12:26:20.981117"
+    "timestamp": "2025-10-26T12:26:54.153646"
   },
   {
-    "test": "Habit Logging",
-    "success": true,
-    "details": "Skipped - no habit ID available",
-    "timestamp": "2025-10-26T12:26:20.981137"
+    "test": "POST Habit Log",
+    "success": false,
+    "details": "Status: 500",
+    "timestamp": "2025-10-26T12:26:54.166939"
   },
   {
     "test": "GET Daily Tip",
-    "success": false,
-    "details": "Status: 500, Response: Internal Server Error",
-    "timestamp": "2025-10-26T12:26:20.991884"
+    "success": true,
+    "details": "AI tip generated (38 chars): \u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u0443\u0439 10 \u043c\u0438\u043d\u0443\u0442 \u0442\u0438\u0448\u0438\u043d\u044b \u0431\u0435\u0437 \u044d\u043a\u0440\u0430\u043d\u0430....",
+    "timestamp": "2025-10-26T12:26:54.219488",
+    "response": {
+      "tip": "\u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u0443\u0439 10 \u043c\u0438\u043d\u0443\u0442 \u0442\u0438\u0448\u0438\u043d\u044b \u0431\u0435\u0437 \u044d\u043a\u0440\u0430\u043d\u0430.",
+      "timestamp": "2025-10-26T12:26:54.175105+00:00"
+    }
   },
   {
     "test": "GET Generate Summary",
-    "success": false,
-    "details": "Status: 500",
-    "timestamp": "2025-10-26T12:26:21.001848"
+    "success": true,
+    "details": "No entries found for summary (expected for limited data)",
+    "timestamp": "2025-10-26T12:26:54.229711"
   },
   {
     "test": "Cleanup",
     "success": true,
-    "details": "Cleaned up test data for user test-user-800ddabb-3b8c-4b05-a0ac-6119ae043d8b",
-    "timestamp": "2025-10-26T12:26:21.008945"
+    "details": "Cleaned up test data for user test-user-80308c08-2e17-420e-8435-87d97a27f61e",
+    "timestamp": "2025-10-26T12:26:54.237028"
   }
 ]
