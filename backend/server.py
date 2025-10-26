@@ -214,11 +214,11 @@ async def update_cycle_settings(
     
     await db.cycle_settings.update_one(
         {"user_id": user_id},
-        {"$set": settings.dict()},
+        {"$set": serialize_for_mongo(settings)},
         upsert=True
     )
     
-    return {"message": "Settings updated", "settings": settings.dict()}
+    return {"message": "Settings updated", "settings": serialize_for_mongo(settings)}
 
 
 @api_router.get("/cycle/calendar")
