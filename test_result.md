@@ -213,6 +213,18 @@ backend:
         agent: "testing"
         comment: "POST /habits creates habits successfully with proper data structure (title, type, target, days_of_week, reminders). POST /habits/{id}/log works correctly for logging habit completion."
 
+  - task: "Habits Deletion"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "DELETE /api/habits/{habit_id} endpoint working perfectly. Successfully deletes habits from database with deleted_count: 1 response. Also deletes all associated habit logs. Returns 404 for non-existent habits. Requires proper authentication. Tested with real habit creation, deletion, and verification of removal from database."
+
   - task: "Habits Retrieval"
     implemented: true
     working: false
