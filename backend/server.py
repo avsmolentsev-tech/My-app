@@ -130,6 +130,9 @@ async def get_current_user(request: Request, authorization: Optional[str] = Head
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
+    # Remove _id field
+    user.pop('_id', None)
+    
     return User(**user)
 
 
