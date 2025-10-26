@@ -744,6 +744,10 @@ async def get_summaries(
     
     summaries = await db.summaries.find(query).sort("created_at", -1).to_list(100)
     
+    # Remove MongoDB _id field
+    for summary in summaries:
+        summary.pop('_id', None)
+    
     return {"summaries": summaries}
 
 
