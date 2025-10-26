@@ -540,4 +540,27 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
     textAlign: 'center',
   },
+  habitsSection: {
+    marginTop: spacing.md,
+  },
+  sectionTitle: {
+    ...typography.h3,
+    color: colors.text,
+    marginBottom: spacing.md,
+  },
+  habitCard: {
+    backgroundColor: colors.secondaryLight + '30',
+  },
+  habitHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  habitHint: {
+    ...typography.caption,
+    color: colors.textLight,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+  },
 });
