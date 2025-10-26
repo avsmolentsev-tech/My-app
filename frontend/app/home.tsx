@@ -270,83 +270,43 @@ export default function HomeScreen() {
             const log = habitLogs[habit.id] || { completed: false, value: 0 };
             const progress = habit.target ? (log.value / habit.target) * 100 : 0;
             
-            const onHabitGestureEvent = Animated.event(
-              [{ nativeEvent: { translationX: new Animated.Value(0) } }],
-              { useNativeDriver: true }
-            );
-
-            const onHabitHandlerStateChange = (event: any) => {
-              if (event.nativeEvent.state === State.END) {
-                const { translationX, velocityX } = event.nativeEvent;
-                
-                if (Math.abs(translationX) > 50 || Math.abs(velocityX) > 500) {
-                  if (translationX > 0) {
-                    handleHabitSwipe(habit.id, 'right', habit);
-                  } else {
-                    handleHabitSwipe(habit.id, 'left', habit);
-                  }
-                }
-              }
-            };
-            
             return (
-              <PanGestureHandler
-                key={habit.id}
-                onGestureEvent={onHabitGestureEvent}
-                onHandlerStateChange={onHabitHandlerStateChange}
-              >
-                <Animated.View style={[styles.card, styles.habitCard]}>
-                  <View style={styles.habitHeader}>
-                    <Text style={styles.cardTitle}>{habit.title}</Text>
-                    <View style={styles.habitHeaderRight}>
-                      {log.completed && (
-                        <Ionicons name="checkmark-circle" size={24} color={colors.success} />
-                      )}
-                      <TouchableOpacity
-                        onPress={() => {
-                          Alert.alert(
-                            'Удалить привычку?',
-                            `Вы уверены, что хотите удалить "${habit.title}"?`,
-                            [
-                              { text: 'Отмена', style: 'cancel' },
-                              {
-                                text: 'Удалить',
-                                style: 'destructive',
-                                onPress: async () => {
-                                  try {
-                                    const { habitsAPI } = await import('../services/api');
-                                    await habitsAPI.delete(habit.id);
-                                    await loadHabits();
-                                  } catch (error) {
-                                    console.error('Error deleting habit:', error);
-                                    Alert.alert('Ошибка', 'Не удалось удалить привычку');
-                                  }
-                                },
-                              },
-                            ]
-                          );
-                        }}
-                        style={styles.deleteButton}
-                      >
-                        <Ionicons name="trash-outline" size={20} color={colors.error} />
-                      </TouchableOpacity>
-                    </View>
+              <View key={habit.id} style={[styles.card, styles.habitCard]}>
+                <View style={styles.habitHeader}>
+                  <Text style={styles.cardTitle}>{habit.title}</Text>
+                  <View style={styles.habitHeaderRight}>
+                    {log.completed && (
+                      <Ionicons name="checkmark-circle" size={24} color={colors.success} />
+                    )}
+                    <TouchableOpacity
+                      onPress={() => handleHabitDelete(habit.id, habit.title)}
+                      style={styles.deleteButton}
+                    >
+                      <Ionicons name="trash-outline" size={20} color={colors.error} />
+                    </TouchableOpacity>
                   </View>
-                  
-                  <View style={styles.waterProgress}>
-                    <View style={styles.progressBar}>
-                      <View style={[styles.progressFill, { width: `${Math.min(progress, 100)}%`, backgroundColor: colors.secondary }]} />
-                    </View>
-                    <Text style={styles.waterText}>
-                      {log.value} / {habit.target} ({Math.round(progress)}%)
-                    </Text>
+                </View>
+                
+                <View style={styles.waterProgress}>
+                  <View style={styles.progressBar}>
+                    <View style={[styles.progressFill, { width: `${Math.min(progress, 100)}%`, backgroundColor: colors.secondary }]} />
                   </View>
-                  
-                  <Text style={styles.habitHint}>
-                    👉 Свайп вправо +{Math.ceil(habit.target * 0.1)} | Свайп влево — удалить
+                  <Text style={styles.waterText}>
+                    {log.value} / {habit.target} ({Math.round(progress)}%)
                   </Text>
-                </Animated.View>
-              </PanGestureHandler>
+                </View>
+                
+                <TouchableOpacity
+                  style={styles.habitButton}
+                  onPress={() => handleHabitIncrement(habit.id, habit)}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="add" size={20} color={colors.white} />
+                  <Text style={styles.habitButtonText}>
+                    +{Math.ceil(habit.target * 0.1)}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             );
           })}
         </View>
