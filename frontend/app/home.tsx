@@ -299,6 +299,66 @@ export default function HomeScreen() {
         </Animated.View>
       </PanGestureHandler>
 
+      {/* Habits Section */}
+      {habits.length > 0 && (
+        <View style={styles.habitsSection}>
+          <Text style={styles.sectionTitle}>Мои привычки</Text>
+          {habits.map((habit) => {
+            const log = habitLogs[habit.id] || { completed: false, value: 0 };
+            const progress = habit.target ? (log.value / habit.target) * 100 : 0;
+            
+            const onHabitGestureEvent = Animated.event(
+              [{ nativeEvent: { translationX: new Animated.Value(0) } }],
+              { useNativeDriver: true }
+            );
+
+            const onHabitHandlerStateChange = (event: any) => {
+              if (event.nativeEvent.state === State.END) {
+                const { translationX, velocityX } = event.nativeEvent;
+                
+                if (Math.abs(translationX) > 50 || Math.abs(velocityX) > 500) {
+                  if (translationX > 0) {
+                    handleHabitSwipe(habit.id, 'right', habit);
+                  } else {
+                    handleHabitSwipe(habit.id, 'left', habit);
+                  }
+                }
+              }
+            };
+            
+            return (
+              <PanGestureHandler
+                key={habit.id}
+                onGestureEvent={onHabitGestureEvent}
+                onHandlerStateChange={onHabitHandlerStateChange}
+              >
+                <Animated.View style={[styles.card, styles.habitCard]}>
+                  <View style={styles.habitHeader}>
+                    <Text style={styles.cardTitle}>{habit.title}</Text>
+                    {log.completed && (
+                      <Ionicons name="checkmark-circle" size={24} color={colors.success} />
+                    )}
+                  </View>
+                  
+                  <View style={styles.waterProgress}>
+                    <View style={styles.progressBar}>
+                      <View style={[styles.progressFill, { width: `${Math.min(progress, 100)}%`, backgroundColor: colors.secondary }]} />
+                    </View>
+                    <Text style={styles.waterText}>
+                      {log.value} / {habit.target} ({Math.round(progress)}%)
+                    </Text>
+                  </View>
+                  
+                  <Text style={styles.habitHint}>
+                    👉 Свайп вправо +{Math.ceil(habit.target * 0.1)} | Свайп влево — удалить
+                  </Text>
+                </Animated.View>
+              </PanGestureHandler>
+            );
+          })}
+        </View>
+      )}
+
       {/* Quick Actions */}
       <View style={styles.actions}>
         <TouchableOpacity
