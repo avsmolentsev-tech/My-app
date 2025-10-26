@@ -94,90 +94,60 @@ export default function HomeScreen() {
   };
 
   const handleAddWater = async () => {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    if (Platform.OS !== 'web') {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
     await addWater(glass);
   };
 
-  const handleWaterSwipe = async (direction: 'right' | 'left') => {
-    if (direction === 'right') {
-      // Свайп вправо = добавить стакан
+  const handleHabitIncrement = async (habitId: string, habit: any) => {
+    const increment = Math.ceil(habit.target * 0.1);
+    const currentValue = habitLogs[habitId]?.value || 0;
+    const newValue = Math.min(currentValue + increment, habit.target);
+    
+    if (Platform.OS !== 'web') {
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      await addWater(glass);
-    } else {
-      // Свайп влево = пропустил (просто вибрация)
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+    }
+    
+    try {
+      const { habitsAPI } = await import('../services/api');
+      await habitsAPI.log(habitId, {
+        completed: newValue >= habit.target,
+        value: newValue,
+      });
+      
+      setHabitLogs({
+        ...habitLogs,
+        [habitId]: { completed: newValue >= habit.target, value: newValue },
+      });
+    } catch (error) {
+      console.error('Error updating habit:', error);
     }
   };
 
-  const handleHabitSwipe = async (habitId: string, direction: 'right' | 'left', habit: any) => {
-    if (direction === 'right') {
-      // Свайп вправо = добавить 10% от цели
-      const increment = Math.ceil(habit.target * 0.1);
-      const currentValue = habitLogs[habitId]?.value || 0;
-      const newValue = Math.min(currentValue + increment, habit.target);
-      
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      
-      try {
-        const { habitsAPI } = await import('../services/api');
-        await habitsAPI.log(habitId, {
-          completed: newValue >= habit.target,
-          value: newValue,
-        });
-        
-        setHabitLogs({
-          ...habitLogs,
-          [habitId]: { completed: newValue >= habit.target, value: newValue },
-        });
-      } catch (error) {
-        console.error('Error updating habit:', error);
-      }
-    } else {
-      // Свайп влево = удалить привычку
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-      
-      Alert.alert(
-        'Удалить привычку?',
-        `Вы уверены, что хотите удалить "${habit.title}"?`,
-        [
-          { text: 'Отмена', style: 'cancel' },
-          {
-            text: 'Удалить',
-            style: 'destructive',
-            onPress: async () => {
-              try {
-                const { habitsAPI } = await import('../services/api');
-                await habitsAPI.delete(habitId);
-                await loadHabits();
-              } catch (error) {
-                console.error('Error deleting habit:', error);
-                Alert.alert('Ошибка', 'Не удалось удалить привычку');
-              }
-            },
+  const handleHabitDelete = async (habitId: string, habitTitle: string) => {
+    Alert.alert(
+      'Удалить привычку?',
+      `Вы уверены, что хотите удалить "${habitTitle}"?`,
+      [
+        { text: 'Отмена', style: 'cancel' },
+        {
+          text: 'Удалить',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const { habitsAPI } = await import('../services/api');
+              await habitsAPI.delete(habitId);
+              await loadHabits();
+              Alert.alert('Успешно', 'Привычка удалена');
+            } catch (error) {
+              console.error('Error deleting habit:', error);
+              Alert.alert('Ошибка', 'Не удалось удалить привычку');
+            }
           },
-        ]
-      );
-    }
-  };
-
-  const onWaterGestureEvent = Animated.event(
-    [{ nativeEvent: { translationX: new Animated.Value(0) } }],
-    { useNativeDriver: true }
-  );
-
-  const onWaterHandlerStateChange = (event: any) => {
-    if (event.nativeEvent.state === State.END) {
-      const { translationX, velocityX } = event.nativeEvent;
-      
-      // Определяем направление свайпа
-      if (Math.abs(translationX) > 50 || Math.abs(velocityX) > 500) {
-        if (translationX > 0) {
-          handleWaterSwipe('right');
-        } else {
-          handleWaterSwipe('left');
-        }
-      }
-    }
+        },
+      ]
+    );
   };
 
   const waterProgress = Math.min((consumed / goal) * 100, 100);
